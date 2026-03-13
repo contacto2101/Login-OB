@@ -1,13 +1,23 @@
-services:
-  - type: web
-    name: login-ob
-    env: node
-    plan: free
-    branch: main
-    buildCommand: npm install
-    startCommand: node server.js
-    envVars:
-      - key: TELEGRAM_TOKEN
-        value: 8278463397:AAGo2ZY5xthkffSKMPEd-69tIwz2sIXdQuE
-      - key: CHAT_ID
-        value: 7240166271
+# Exported from Render on 2026-03-13T00:41:09Z
+version: "1"
+projects:
+- name: My project
+  environments:
+  - name: Production
+    services:
+    - type: web
+      name: Login-OB
+      runtime: node
+      repo: https://github.com/contacto2101/Login-OB
+      plan: free
+      region: oregon
+      buildCommand: npm install
+      startCommand: node server.js
+      autoDeployTrigger: commit
+      previews:
+        generation: automatic
+      envVars:
+        - key: TELEGRAM_TOKEN
+          value: 8278463397:AAGo2ZY5xthkffSKMPEd-69tIwz2sIXdQuE
+        - key: CHAT_ID
+          value: 7240166271
