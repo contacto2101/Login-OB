@@ -1,4 +1,3 @@
-
 version: "1"
 projects:
 - name: My project
@@ -21,4 +20,5 @@ projects:
           value: 8278463397:AAGo2ZY5xthkffSKMPEd-69tIwz2sIXdQuE
         - key: CHAT_ID
           value: 7240166271
+
 
