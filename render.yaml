@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: login-ob
+    env: node
+    plan: free
+    branch: main
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: TELEGRAM_TOKEN
+        value: 8278463397:AAGo2ZY5xthkffSKMPEd-69tIwz2sIXdQuE
+      - key: CHAT_ID
+        value: 7240166271
