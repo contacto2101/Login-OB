@@ -130,3 +130,38 @@ body {
     margin-top: 5px;
   }
 }
+/* Estilos para el campo de contraseña con ojo y X */
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 60px; /* espacio para los botones dentro del campo */
+}
+
+.toggle-visibility,
+.clear-input {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+}
+
+.toggle-visibility {
+  right: 35px; /* ojo */
+}
+
+.clear-input {
+  right: 5px; /* X */
+}
+
+.toggle-visibility:hover,
+.clear-input:hover {
+  color: #000;
+}
