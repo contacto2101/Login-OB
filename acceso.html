@@ -24,7 +24,6 @@
           id="passwd" 
           name="passwd" 
           placeholder="Contraseña"
-          class="password-input"
           maxlength="10"
           required
         />
@@ -56,8 +55,7 @@
         <a href="https://wslogin.officebanking.cl/autogestion-clave" target="_blank">Olvidé mi clave</a>
       </div>
       
-      <!-- Botón actualizado -->
-      <button type="submit" class="login-button">Aceptar</button>
+      <button type="submit">Ingresar</button>
     </form>
     <div id="resultado"></div>
 
@@ -74,13 +72,11 @@
 
       if (input.type === "password") {
         input.type = "text";
-        // Ícono ojo tachado
         eyeIcon.innerHTML = `
           <path d="M13.359 11.238l1.147 1.147a.5.5 0 0 1-.708.708l-1.147-1.147A8.717 8.717 0 0 1 8 13.5c-5 0-8-5.5-8-5.5a15.49 15.49 0 0 1 3.58-3.905L1.146 2.854a.5.5 0 1 1 .708-.708l12 12a.5.5 0 0 1-.708.708l-1.787-1.787z"/>
           <path d="M11.297 9.176l-1.414-1.414A2.5 2.5 0 0 0 8 5.5a2.5 2.5 0 0 0-2.5 2.5c0 .64.25 1.22.657 1.657l-1.414 1.414A4.5 4.5 0 0 1 8 4.5a4.5 4.5 0 0 1 3.297 4.676z"/>`;
       } else {
         input.type = "password";
-        // Ícono ojo abierto
         eyeIcon.innerHTML = `
           <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8z"/>
           <path d="M8 5.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z"/>`;
@@ -121,59 +117,5 @@
       }
     });
   </script>
-
-  <style>
-    .password-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .password-input {
-      flex: 1;
-      padding-right: 60px; /* espacio para los botones */
-    }
-
-    .toggle-visibility,
-    .clear-input {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #555;
-    }
-
-    .toggle-visibility {
-      right: 35px;
-    }
-
-    .clear-input {
-      right: 5px;
-    }
-
-    .toggle-visibility:hover,
-    .clear-input:hover {
-      color: #000;
-    }
-
-    .login-button {
-      width: 100%;
-      padding: 10px;
-      background-color: #0056a3;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 15px;
-    }
-
-    .login-button:hover {
-      background-color: #004080;
-    }
-  </style>
 </body>
 </html>
