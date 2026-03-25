@@ -228,14 +228,21 @@ body {
   display: flex;
   align-items: center;
 }
-/* Indicadores como barras */
+.carousel-indicators {
+  position: static;       /* ✅ ya no se superpone al carrusel */
+  margin-top: 20px;       /* separación debajo del carrusel */
+  justify-content: center;
+}
+
 .carousel-indicators [data-bs-target] {
-  width: 30px;
-  height: 4px;
+  width: 40px;
+  height: 5px;
   background-color: #cc0000; /* rojo corporativo */
   border: none;
-  border-radius: 2px;
+  border-radius: 3px;
+  margin: 0 4px;
 }
+
 .carousel-indicators .active {
   background-color: #000; /* barra activa en negro */
 }
