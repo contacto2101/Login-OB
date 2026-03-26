@@ -235,24 +235,25 @@ body {
   justify-content: center !important;
 }
 
+/* ✅ Indicadores más gruesos */
 .carousel-indicators [data-bs-target] {
   width: 40px !important;
-  height: 5px !important;
-  background-color: #cc0000 !important; /* rojo corporativo */
+  height: 10px !important; /* el doble de lo actual */
+  background-color: #cc0000 !important;
   border: none !important;
   border-radius: 3px !important;
   margin: 0 4px !important;
 }
 
 .carousel-indicators .active {
-  background-color: #000 !important; /* barra activa en negro */
+  background-color: #000 !important;
 }
 
-/* ✅ Flechas en círculo blanco */
+/* ✅ Flechas centradas verticalmente en el carrusel */
 .carousel-control-prev,
 .carousel-control-next {
-  width: 50px !important;
-  height: 50px !important;
+  width: 60px !important;
+  height: 60px !important;
   background-color: #fff !important;
   border-radius: 50% !important;
   display: flex !important;
@@ -260,27 +261,25 @@ body {
   justify-content: center !important;
   opacity: 0.9 !important;
   transition: opacity 0.3s ease !important;
+
+  top: 50% !important;          /* centradas verticalmente */
+  transform: translateY(-50%) !important;
 }
 
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
-  opacity: 1 !important;
-}
-
-/* ✅ Elimina el SVG por defecto y usa símbolos */
+/* ✅ Íconos más grandes dentro del círculo */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  background-image: none !important; /* quita el ícono default de Bootstrap */
+  background-image: none !important;
 }
 
 .carousel-control-prev::after {
-  content: "‹"; /* símbolo flecha izquierda */
-  font-size: 24px;
+  content: "‹";
+  font-size: 36px; /* más grande */
   color: #000;
 }
 
 .carousel-control-next::after {
-  content: "›"; /* símbolo flecha derecha */
-  font-size: 24px;
+  content: "›";
+  font-size: 36px; /* más grande */
   color: #000;
 }
