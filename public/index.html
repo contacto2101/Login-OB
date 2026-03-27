@@ -31,19 +31,25 @@
 <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
 
-    <!-- Primer par -->
+    <!-- Primer slide -->
     <div class="carousel-item active">
       <div class="row">
-        <div class="col-12 col-md-6">
-          <img src="/beneficiosEmpresas.jpg" class="d-block w-100" alt="Beneficios Empresas">
+        <!-- Imagen combinada para escritorio/tablet -->
+        <div class="col-12 d-none d-md-block">
+          <img src="/BeneficiosEmpresas.png" class="d-block w-100 beneficios-empresas" alt="Beneficios Empresas">
         </div>
-        <div class="col-12 col-md-6">
-          <img src="/beneficios2.png" class="d-block w-100" alt="Beneficios 2">
+
+        <!-- Imágenes separadas para móvil -->
+        <div class="col-12 d-block d-md-none">
+          <img src="/beneficiosempresas.jpg" class="d-block w-100" alt="Beneficios Empresas">
+        </div>
+        <div class="col-12 d-block d-md-none">
+          <img src="/beneficios2.png" class="d-block w-100 beneficios2" alt="Beneficios 2">
         </div>
       </div>
     </div>
 
-    <!-- Segundo par -->
+    <!-- Segundo slide -->
     <div class="carousel-item">
       <div class="row">
         <div class="col-12 col-md-6">
@@ -55,7 +61,7 @@
       </div>
     </div>
 
-    <!-- Tercer par -->
+    <!-- Tercer slide -->
     <div class="carousel-item">
       <div class="row">
         <div class="col-12 col-md-6">
@@ -86,22 +92,7 @@
   <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
   <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
 </div>
-  <div class="carousel-item active">
-  <div class="row">
-    <!-- Imagen combinada para escritorio/tablet -->
-    <div class="col-12 d-none d-md-block">
-      <img src="/BeneficiosEmpresas.png" class="d-block w-100 beneficios-empresas" alt="Beneficios Empresas">
-    </div>
 
-    <!-- Imágenes separadas para móvil -->
-    <div class="col-12 d-block d-md-none">
-      <img src="/beneficiosempresas.jpg" class="d-block w-100" alt="Beneficios Empresas">
-    </div>
-    <div class="col-12 d-block d-md-none">
-      <img src="/beneficios2.png" class="d-block w-100 beneficios2" alt="Beneficios 2">
-    </div>
-  </div>
-</div>
 
   <!-- Offcanvas con tu flujo original -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasLogin" aria-labelledby="offcanvasLoginLabel">
