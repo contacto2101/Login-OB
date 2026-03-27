@@ -1020,3 +1020,9 @@ body {
   object-fit: contain !important; /* se muestra completa, sin recorte */
   margin: auto;               /* centrada en su espacio */
 }
+/* ✅ Imagen combinada en escritorio/tablet */
+.beneficios-empresas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
