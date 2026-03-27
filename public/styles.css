@@ -1012,3 +1012,11 @@ body {
   font-size: 36px; /* más grande */
   color: #000;
 }
+/* ✅ Ajuste especial para imágenes que se cortan */
+.carousel-item img#tc2,
+.carousel-item img#beneficios2,
+.carousel-item img#soap2 {
+  height: 50% !important;     /* la mitad de alto dentro de la columna */
+  object-fit: contain !important; /* se muestra completa, sin recorte */
+  margin: auto;               /* centrada en su espacio */
+}
