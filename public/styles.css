@@ -182,15 +182,16 @@ h1, h2 {
     padding: 6px 10px;
   }
 }
-
 /* ========================= */
-/* Carrusel corregido        */
+/* Carrusel corregido final  */
 /* ========================= */
 
 /* General */
 .carousel-item img {
+  display: block;
   width: 100%;
-  height: auto;
+  height: auto;          /* Mantiene proporción */
+  max-height: 400px;     /* Altura controlada en todas las pantallas */
 }
 
 /* ✅ Ajustes específicos para móvil */
@@ -198,7 +199,7 @@ h1, h2 {
   .carousel-item img {
     object-fit: contain;   /* Evita recortes */
     margin-bottom: 10px;   /* Espacio entre imágenes apiladas */
-    max-height: none;      /* No limitar altura en móvil */
+    max-height: 280px;     /* Más pequeño en móvil */
   }
 }
 
@@ -207,7 +208,7 @@ h1, h2 {
   .carousel-item .row {
     display: flex;
     align-items: stretch;
-    height: 80vh; /* altura fija del carrusel */
+    height: auto;          /* Ya no forzamos 80vh */
   }
 
   .carousel-item .col-12.col-md-6 {
@@ -217,8 +218,9 @@ h1, h2 {
 
   .carousel-item img {
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* recorta para que se vean cuadradas */
+    height: auto;
+    max-height: 500px;     /* Tamaño controlado en escritorio */
+    object-fit: cover;     /* Se recorta un poco para verse cuadrada */
   }
 }
 
@@ -286,40 +288,4 @@ h1, h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-/* ✅ Ajustes generales para todas las imágenes del carrusel */
-.carousel-item img {
-  width: 100%;
-  height: auto;          /* Mantiene proporción */
-  max-height: 400px;     /* Limita altura en todas las pantallas */
-  object-fit: contain;   /* Evita recortes */
-}
-
-/* ✅ Ajustes específicos para móvil */
-@media (max-width: 767px) {
-  .carousel-item img {
-    margin-bottom: 10px; /* Espacio entre imágenes apiladas */
-    max-height: 300px;   /* Más pequeño en móvil */
-  }
-}
-
-/* ✅ Ajustes para escritorio/tablet */
-@media (min-width: 768px) {
-  .carousel-item .row {
-    display: flex;
-    align-items: stretch;
-    height: auto;        /* Ya no forzamos 80vh */
-  }
-
-  .carousel-item .col-12.col-md-6 {
-    flex: 1;
-    display: flex;
-  }
-
-  .carousel-item img {
-    width: 100%;
-    height: auto;
-    max-height: 500px;   /* Tamaño controlado en escritorio */
-    object-fit: cover;   /* Se recorta un poco para verse cuadrada */
-  }
 }
