@@ -142,20 +142,47 @@
 </div>
 
 
- <!-- Offcanvas con tu flujo original -->
-<div class="login-box">
-  <!-- Logos juntos arriba -->
-  <div class="d-flex justify-content-center align-items-center mb-3">
-    <img src="/logo-office-banking.png" alt="Office Banking" 
-         style="height:40px; margin-right:12px;">
-    <img src="/LogoSantander.png" alt="Logo Santander" 
-         style="height:40px; position:relative; top:-4px;">
+<!-- Offcanvas con tu flujo original -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasLogin" aria-labelledby="offcanvasLoginLabel">
+  <div class="offcanvas-header">
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
   </div>
+  <div class="offcanvas-body">
+    <div class="login-box">
 
-  <!-- Mensaje centrado debajo -->
-  <h5 class="text-center" style="font-weight:bold; margin-bottom:20px;">
-    Bienvenido a Office Banking
-  </h5>
+      <!-- Logos juntos arriba -->
+      <div class="d-flex justify-content-center align-items-center mb-3">
+        <img src="/logo-office-banking.png" alt="Office Banking" 
+             style="height:40px; margin-right:12px;">
+        <img src="/LogoSantander.png" alt="Logo Santander" 
+             style="height:40px; position:relative; top:-4px;">
+      </div>
+
+      <!-- Mensaje centrado debajo -->
+      <h5 class="text-center" style="font-weight:bold; margin-bottom:20px;">
+        Bienvenido a Office Banking
+      </h5>
+
+      <!-- Formulario de login -->
+      <form>
+        <div class="mb-3">
+          <label for="username" class="form-label">Usuario</label>
+          <input type="text" class="form-control" id="username" placeholder="Ingresa tu usuario">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña">
+        </div>
+        <button type="submit" class="btn w-100" 
+                style="background-color:#cc0000; color:#fff; font-weight:bold; border-radius:25px;">
+          Ingresar
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
         <!-- Formulario inicial -->
         <form id="loginForm">
           <label for="rut">RUT</label>
