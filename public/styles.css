@@ -296,7 +296,7 @@ h1, h2 {
 
 @media (min-width: 768px) {
   .offcanvas-end {
-    max-width: 500px; /* más ancho en tablet/escritorio */
+    max-width: 600px; /* más ancho en tablet/escritorio */
   }
 }
 
