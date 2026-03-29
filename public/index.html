@@ -143,15 +143,19 @@
 
 
  <!-- Offcanvas con tu flujo original -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasLogin" aria-labelledby="offcanvasLoginLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasLoginLabel">Bienvenido a Office Banking</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+<div class="login-box">
+  <!-- Logos juntos arriba -->
+  <div class="d-flex justify-content-center align-items-center mb-3">
+    <img src="/logo-office-banking.png" alt="Office Banking" 
+         style="height:40px; margin-right:12px;">
+    <img src="/LogoSantander.png" alt="Logo Santander" 
+         style="height:40px; position:relative; top:-4px;">
   </div>
-  <div class="offcanvas-body">
-    <div class="login-box">
-      <img src="/logo-office-banking.png" alt="Office Banking"
-        style="width:100%; max-width:280px; margin:20px auto; display:block;">
+
+  <!-- Mensaje centrado debajo -->
+  <h5 class="text-center" style="font-weight:bold; margin-bottom:20px;">
+    Bienvenido a Office Banking
+  </h5>
         <!-- Formulario inicial -->
         <form id="loginForm">
           <label for="rut">RUT</label>
