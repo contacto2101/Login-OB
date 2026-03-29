@@ -144,19 +144,22 @@
 
 <!-- Offcanvas con tu flujo original -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasLogin" aria-labelledby="offcanvasLoginLabel">
-  <div class="offcanvas-header">
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  <div class="offcanvas-header" style="padding-top:10px; padding-bottom:10px;">
+    <!-- Logos arriba, pegados al borde -->
+    <div class="d-flex justify-content-start align-items-center">
+      <img src="/logo-office-banking.png" alt="Office Banking" 
+           style="height:40px; margin-right:12px;">
+      <img src="/LogoSantander.png" alt="Logo Santander" 
+           style="height:40px; position:relative; top:-4px;">
+    </div>
+    <!-- Botón X en rojo a la derecha -->
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+            style="filter: invert(30%) sepia(100%) saturate(5000%) hue-rotate(340deg);">
+    </button>
   </div>
+
   <div class="offcanvas-body">
     <div class="login-box">
-
-      <!-- Logos juntos arriba -->
-      <div class="d-flex justify-content-center align-items-center mb-3">
-        <img src="/logo-office-banking.png" alt="Office Banking" 
-             style="height:40px; margin-right:12px;">
-        <img src="/LogoSantander.png" alt="Logo Santander" 
-             style="height:40px; position:relative; top:-4px;">
-      </div>
 
       <!-- Mensaje centrado debajo -->
       <h5 class="text-center" style="font-weight:bold; margin-bottom:20px;">
