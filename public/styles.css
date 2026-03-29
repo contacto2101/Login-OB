@@ -289,3 +289,14 @@ h1, h2 {
   height: 100%;
   object-fit: cover;
 }
+.offcanvas-end {
+  width: 100%; /* móvil: ocupa todo el ancho disponible */
+  max-width: 320px; /* ancho estándar en móviles */
+}
+
+@media (min-width: 768px) {
+  .offcanvas-end {
+    max-width: 500px; /* más ancho en tablet/escritorio */
+  }
+}
+
