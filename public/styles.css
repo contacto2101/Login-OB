@@ -63,6 +63,27 @@ body {
 .forgot-link:hover {
   text-decoration: underline;
 }
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.extra-link {
+  font-size: 14px;
+  color: #0070c9;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.extra-link:hover {
+  text-decoration: underline;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
 
 /* Texto secundario */
 .sub-text {
