@@ -298,6 +298,6 @@ h1, h2 {
 /* Ajuste solo para tablet/escritorio */
 @media (min-width: 768px) {
   .offcanvas.offcanvas-end {
-    max-width: 550px !important; /* ← este valor controla el ancho */
+    max-width: 530px !important; /* ← este valor controla el ancho */
   }
 }
