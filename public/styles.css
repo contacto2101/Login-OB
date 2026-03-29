@@ -301,3 +301,21 @@ h1, h2 {
     max-width: 500px !important; /* ← este valor controla el ancho */
   }
 }
+/* Logos responsive */
+.logo-ob, .logo-santander {
+  height: 36px;
+  max-width: 100%;
+}
+@media (min-width: 768px) {
+  .logo-ob, .logo-santander {
+    height: 40px;
+  }
+}
+
+/* Botón X en rojo */
+.btn-close-red {
+  filter: invert(30%) sepia(100%) saturate(5000%) hue-rotate(340deg);
+}
+.btn-close-red:hover {
+  filter: invert(20%) sepia(100%) saturate(5000%) hue-rotate(340deg);
+}
