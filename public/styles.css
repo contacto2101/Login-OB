@@ -319,3 +319,29 @@ h1, h2 {
 .btn-close-red:hover {
   filter: invert(20%) sepia(100%) saturate(5000%) hue-rotate(340deg);
 }
+.login-form input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ccc; /* solo línea inferior */
+  padding: 8px 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.login-form input:focus {
+  border-bottom: 2px solid #cc0000; /* línea roja al enfocar */
+}
+
+.btn-red {
+  background-color: #cc0000;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 8px;
+  border: none;
+}
+
+.btn-red:hover {
+  background-color: #a80000; /* rojo más oscuro al hover */
+  transition: background-color 0.3s ease;
+}
