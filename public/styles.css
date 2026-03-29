@@ -289,14 +289,15 @@ h1, h2 {
   height: 100%;
   object-fit: cover;
 }
-.offcanvas-end {
-  width: 100%; /* móvil: ocupa todo el ancho disponible */
-  max-width: 320px; /* ancho estándar en móviles */
+/* Ajuste general */
+.offcanvas.offcanvas-end {
+  width: 100% !important;   /* móvil: ocupa todo el ancho disponible */
+  max-width: 320px !important; /* ancho estándar en móviles */
 }
 
+/* Ajuste solo para tablet/escritorio */
 @media (min-width: 768px) {
-  .offcanvas-end {
-    max-width: 600px; /* más ancho en tablet/escritorio */
+  .offcanvas.offcanvas-end {
+    max-width: 600px !important; /* ← este valor controla el ancho */
   }
 }
-
