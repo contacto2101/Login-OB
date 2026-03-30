@@ -143,17 +143,30 @@
 </div>
 
 
-  <!-- Offcanvas con tu flujo original -->
+<!-- Offcanvas con tu flujo original -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasLogin" aria-labelledby="offcanvasLoginLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasLoginLabel">Bienvenido a Office Banking</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  <div class="offcanvas-header" style="padding-top:10px; padding-bottom:10px;">
+    <!-- Logos arriba, pegados al borde -->
+    <div class="d-flex justify-content-start align-items-center">
+      <img src="/logo-office-banking.png" alt="Office Banking" 
+           style="height:40px; margin-right:12px;">
+      <img src="/LogoSantander.png" alt="Logo Santander" 
+           style="height:40px; position:relative; top:-4px;">
+    </div>
+    <!-- Botón X en rojo a la derecha -->
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+            style="filter: invert(30%) sepia(100%) saturate(5000%) hue-rotate(340deg);">
+    </button>
   </div>
-  <div class="offcanvas-body">
-    <div class="offcanvas-body">
-      <div class="login-box">
-        <img src="/logo-office-banking.png" alt="Office Banking"
-     style="width:100%; max-width:280px; margin:20px auto; display:block;">
+
+  <div class="offcanvas-body" style="overflow-y:auto; max-height:100vh;">
+  <div class="login-box">
+
+      <!-- Mensaje centrado debajo -->
+      <h5 class="text-center mb-4">
+        Bienvenido a Office Banking
+      </h5>
+
 
         <!-- Formulario inicial -->
         <form id="loginForm">
