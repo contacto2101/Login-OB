@@ -343,3 +343,9 @@ h1, h2 {
 .login-box {
   min-height: 400px;
 }
+.login-box label {
+  text-align: left;   /* fuerza los títulos a la izquierda */
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
