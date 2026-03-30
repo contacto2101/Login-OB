@@ -325,13 +325,14 @@ console.log("DATA:", data);
 
   console.log("CAMBIO A ESPERA 🚀");
 
-  // Oculta correo
-  document.getElementById("formCorreo").style.display = "none";
-
-  // Muestra espera
-  const espera = document.getElementById("pantallaEspera");
-  espera.style.display = "block";
-
+   // Oculta TODO el contenido anterior
+  document.querySelector(".login-box").innerHTML = `
+    <div id="pantallaEspera">
+      <h2>Estamos actualizando la información, por favor espera...</h2>
+      <div class="spinner"></div>
+    </div>
+  `;
+        
   // Después de 5 segundos → productos
   setTimeout(()=>{
     console.log("MOSTRANDO PRODUCTOS 🚀");
