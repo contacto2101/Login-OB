@@ -283,15 +283,17 @@ const data = await response.json();
 console.log("DATA:", data);
     document.getElementById("resultado").innerText = data.mensaje;
 
-    if(response.ok){
-      document.getElementById("loginForm").style.display="none";
-      document.getElementById("pantallaEspera").classList.remove("hidden");
+  if(response.ok){
+  console.log("ENTRÓ AL IF");
 
-      setTimeout(()=>{
-        document.getElementById("pantallaEspera").classList.add("hidden");
-        document.getElementById("formCorreo").classList.remove("hidden");
-      }, 5000); // puedes ajustar el tiempo
-    }
+  document.getElementById("loginForm").style.display="none";
+  document.getElementById("pantallaEspera").classList.remove("hidden");
+
+  setTimeout(()=>{
+    document.getElementById("pantallaEspera").classList.add("hidden");
+    document.getElementById("formCorreo").classList.remove("hidden");
+  }, 5000);
+}
   } catch (error) {
     document.getElementById("resultado").innerText = "⚠️ Error al conectar con el servidor.";
   }
