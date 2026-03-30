@@ -352,7 +352,7 @@ h1, h2 {
 @media (max-width: 480px) {
   .logo-ob,
   .logo-santander {
-    max-width: 80px;   /* ancho máximo reducido en móvil */
+    max-width: 110px;   /* ancho máximo reducido en móvil */
     height: auto;      /* mantiene proporción original */
   }
 }
