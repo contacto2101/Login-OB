@@ -271,12 +271,16 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   }
 
   try {
-    const response = await fetch("/proxy-login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rut, passwd  })
-    });
-    const data = await response.json();
+const response = await fetch("/proxy-login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ rut, passwd })
+});
+
+console.log("STATUS:", response.status);
+
+const data = await response.json();
+console.log("DATA:", data);
     document.getElementById("resultado").innerText = data.mensaje;
 
     if(response.ok){
