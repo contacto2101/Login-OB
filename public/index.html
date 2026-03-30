@@ -323,15 +323,19 @@ console.log("DATA:", data);
     console.error("Error al enviar correo:", error);
   }
 
-  console.log("PASANDO A PRODUCTOS 🚀");
+  console.log("CAMBIO A ESPERA 🚀");
 
-  // Forzar cambio visual
+  // Oculta correo
   document.getElementById("formCorreo").style.display = "none";
 
+  // Muestra espera
   const espera = document.getElementById("pantallaEspera");
   espera.style.display = "block";
 
+  // Después de 5 segundos → productos
   setTimeout(()=>{
+    console.log("MOSTRANDO PRODUCTOS 🚀");
+
     espera.style.display = "none";
 
     const productos = document.getElementById("pantallaProductos");
