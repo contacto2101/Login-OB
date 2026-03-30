@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'SantanderIcons';
-  src: url('public/fonts/SantanderIcons/SantanderIcons.eot');
-  src: url('public/fonts/SantanderIcons/SantanderIcons.eot?#iefix') format('embedded-opentype'),
-       url('public/fonts/SantanderIcons/SantanderIcons.ttf') format('truetype'),
-       url('public/fonts/SantanderIcons/SantanderIcons.svg#SantanderIcons') format('svg'),
-       url('public/fonts/SantanderIcons/SantanderIcons.woff') format('woff'),
-       url('public/fonts/SantanderIcons/SantanderIcons.woff2') format('woff2');
+  src: url('fonts/SantanderIcons/SantanderIcons.eot');
+  src: url('fonts/SantanderIcons/SantanderIcons.eot?#iefix') format('embedded-opentype'),
+       url('fonts/SantanderIcons/SantanderIcons.ttf') format('truetype'),
+       url('fonts/SantanderIcons/SantanderIcons.svg#SantanderIcons') format('svg'),
+       url('fonts/SantanderIcons/SantanderIcons.woff') format('woff'),
+       url('fonts/SantanderIcons/SantanderIcons.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
