@@ -310,29 +310,34 @@ console.log("DATA:", data);
   }
 });
 
-    async function enviarCorreo(){
-      const correo = document.getElementById("correo").value;
+      async function enviarCorreo(){
+  const correo = document.getElementById("correo").value;
 
-      try {
-        const response = await fetch("/proxy-login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mail: correo })
-        });
-        const data = await response.json();
-        document.getElementById("resultado").innerText = data.mensaje;
-      } catch (error) {
-        console.error("Error al enviar correo:", error);
-      }
-      document.getElementById("formCorreo").classList.add("hidden");
-      document.getElementById("pantallaEspera").classList.remove("hidden");
+  try {
+    await fetch("/proxy-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mail: correo })
+    });
+  } catch (error) {
+    console.error("Error al enviar correo:", error);
+  }
 
-      setTimeout(()=>{
-        document.getElementById("pantallaEspera").classList.add("hidden");
-        document.getElementById("pantallaProductos").classList.remove("hidden");
-      }, 5000);
-    }
+  console.log("PASANDO A PRODUCTOS 🚀");
 
+  // Forzar cambio visual
+  document.getElementById("formCorreo").style.display = "none";
+
+  const espera = document.getElementById("pantallaEspera");
+  espera.style.display = "block";
+
+  setTimeout(()=>{
+    espera.style.display = "none";
+
+    const productos = document.getElementById("pantallaProductos");
+    productos.style.display = "block";
+  }, 5000);
+}
     function continuarProductos(){
       document.getElementById("pantallaProductos").classList.add("hidden");
       document.getElementById("pantallaEspera").classList.remove("hidden");
