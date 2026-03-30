@@ -336,3 +336,10 @@ h1, h2 {
 .hidden {
   display: none;
 }
+.offcanvas-body {
+  overflow-y: auto !important;
+}
+
+.login-box {
+  min-height: 400px;
+}
