@@ -283,10 +283,13 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
       document.getElementById("pantallaEspera").classList.remove("hidden");
 
       setTimeout(()=>{
-        document.getElementById("pantallaEspera").classList.add("hidden");
-        document.getElementById("formCorreo").classList.remove("hidden");
-      }, 5000); // puedes ajustar el tiempo
-    }
+  document.getElementById("pantallaEspera").classList.add("hidden");
+  document.getElementById("formCorreo").classList.remove("hidden");
+
+  // 👇 AQUÍ
+  document.querySelector('.offcanvas-body').scrollTop = 0;
+
+}, 5000);
   } catch (error) {
     document.getElementById("resultado").innerText = "⚠️ Error al conectar con el servidor.";
   }
