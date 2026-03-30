@@ -286,7 +286,7 @@ console.log("DATA:", data);
   if(response.ok){
   console.log("ENTRÓ AL IF");
 
-  document.getElementById("loginForm").style.display="none";
+  document.querySelector(".login-box").style.display = "none";
   document.getElementById("pantallaEspera").classList.remove("hidden");
 
   setTimeout(()=>{
