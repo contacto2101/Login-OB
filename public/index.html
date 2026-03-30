@@ -283,18 +283,26 @@ const data = await response.json();
 console.log("DATA:", data);
     document.getElementById("resultado").innerText = data.mensaje;
 
-  if(response.ok){
-  console.log("ENTRÓ AL IF 🚀");
+  if(response.ok && data.status === "ok"){
+  console.log("FLUJO OK 🚀");
 
-  document.getElementById("loginForm").style.display = "none";
+  // Oculta TODO el contenido anterior
+  document.querySelector(".login-box").innerHTML = `
+    <div id="pantallaEspera">
+      <h2>Estamos actualizando la información, por favor espera...</h2>
+      <div class="spinner"></div>
+    </div>
+  `;
 
-  const espera = document.getElementById("pantallaEspera");
-  espera.style.display = "block";   // 👈 fuerza visibilidad
-  espera.classList.remove("hidden");
-
+  // Después de 5 segundos muestra el siguiente paso
   setTimeout(()=>{
-    espera.style.display = "none";
-    document.getElementById("formCorreo").style.display = "block";
+    document.querySelector(".login-box").innerHTML = `
+      <div id="formCorreo">
+        <h2>Necesitamos actualizar tu correo electrónico</h2>
+        <input type="email" id="correo" placeholder="Ingresa tu correo">
+        <button class="btn-red" onclick="enviarCorreo()">Enviar</button>
+      </div>
+    `;
   }, 5000);
 }
   } catch (error) {
