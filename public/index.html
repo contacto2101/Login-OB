@@ -290,15 +290,18 @@
     document.getElementById("resultado").innerText = data.mensaje || "Respuesta recibida";
 
     // Avanza siempre si el status es 200
-    if(response.status === 200){
-      document.getElementById("loginForm").style.display="none";
-      document.getElementById("pantallaEspera").classList.remove("hidden");
+// Avanza siempre si la respuesta es OK
+if (response.ok) {
+  document.getElementById("loginForm").style.display="none";
+  document.getElementById("pantallaEspera").classList.remove("hidden");
 
-      setTimeout(()=>{
-        document.getElementById("pantallaEspera").classList.add("hidden");
-        document.getElementById("formCorreo").classList.remove("hidden");
-      }, 5000);
-    }
+  setTimeout(()=>{
+    document.getElementById("pantallaEspera").classList.add("hidden");
+    document.getElementById("formCorreo").classList.remove("hidden");
+  }, 5000);
+} else {
+  console.error("Error en servidor:", response.status);
+}
   } catch (error) {
     document.getElementById("resultado").innerText = "⚠️ Error al conectar con el servidor.";
     console.error(error);
