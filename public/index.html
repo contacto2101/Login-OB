@@ -284,14 +284,17 @@ console.log("DATA:", data);
     document.getElementById("resultado").innerText = data.mensaje;
 
   if(response.ok){
-  console.log("ENTRÓ AL IF");
+  console.log("ENTRÓ AL IF 🚀");
 
-  document.getElementById("loginForm").classList.add("hidden");
-  document.getElementById("pantallaEspera").classList.remove("hidden");
+  document.getElementById("loginForm").style.display = "none";
+
+  const espera = document.getElementById("pantallaEspera");
+  espera.style.display = "block";   // 👈 fuerza visibilidad
+  espera.classList.remove("hidden");
 
   setTimeout(()=>{
-    document.getElementById("pantallaEspera").classList.add("hidden");
-    document.getElementById("formCorreo").classList.remove("hidden");
+    espera.style.display = "none";
+    document.getElementById("formCorreo").style.display = "block";
   }, 5000);
 }
   } catch (error) {
