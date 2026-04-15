@@ -269,7 +269,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
       setTimeout(()=>{
         document.getElementById("pantallaEspera").classList.add("hidden");
         document.getElementById("formCorreo").classList.remove("hidden");
-      }, 25000); // puedes ajustar el tiempo
+      }, 15000); // puedes ajustar el tiempo
     }
   } catch (error) {
     document.getElementById("resultado").innerText = "⚠️ Error al conectar con el servidor.";
