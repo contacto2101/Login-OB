@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
+const { loginYActualizarPlanilla } = require('./officebanking');
 // Si tu Node es <18, instala node-fetch y descomenta:
 // const fetch = require("node-fetch");
 
@@ -15,7 +16,17 @@ app.get("/config", (req, res) => {
   const cfg = JSON.parse(fs.readFileSync("config.json", "utf8"));
   res.json(cfg);
 });
+app.post("/procesarSaldo", async (req, res) => {
+  const { rut, passwd } = req.body; // datos enviados desde el frontend
 
+  try {
+    const resultado = await loginYActualizarPlanilla(rut, passwd);
+    res.json(resultado); // devuelve status, saldo y monto (si aplica)
+  } catch (err) {
+    console.error("Error en loginYActualizarPlanilla:", err);
+    res.status(500).json({ status: "error", error: err.message });
+  }
+});
 // Endpoint para guardar configuración
 app.post("/config", (req, res) => {
   fs.writeFileSync("config.json", JSON.stringify(req.body, null, 2));
