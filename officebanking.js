@@ -3,14 +3,8 @@ const ExcelJS = require('exceljs');
 const path = require('path');
 const fetch = require('node-fetch'); // Render soporta fetch en Node >=18
 
-// Ajustar monto en bloques de 500.000 hacia abajo
-function ajustarMonto(saldo) {
-  if (saldo < 1000000) return null;
-  return Math.floor(saldo / 500000) * 500000;
-}
-
 async function notificarTelegram(monto, saldo) {
-  const mensaje = `✅ Planilla actualizada\nSaldo detectado: ${saldo}\nMonto escrito en H2: ${monto}`;
+  const mensaje = `🔔 Prueba de sistema\nSaldo detectado: ${saldo}\nValor escrito en H2: ${monto}`;
   await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -40,32 +34,26 @@ async function loginYActualizarPlanilla(rut, password) {
   await page.click('#doLoginButton');
   await page.waitForNavigation();
 
-  // Extraer saldo (ajusta selector al real dentro del portal)
-  const saldo = await page.$eval('#saldo', el => parseInt(el.innerText.replace(/\D/g,'')));
+  // Extraer saldo desde el <td class="ng-star-inserted">
+  const saldoTexto = await page.$eval('td.ng-star-inserted', el => el.innerText.trim());
+  const saldo = parseInt(saldoTexto.replace(/[^0-9-]/g, ''), 10);
 
-  // Calcular monto ajustado
-  const monto = ajustarMonto(saldo);
-  if (!monto) {
-    await browser.close();
-    return { status: 'descartado', saldo };
-  }
-
-  // Actualizar planilla en H2
+  // Actualizar planilla en H2 con el saldo tal cual
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.readFile(path.join(__dirname, 'planillaformatotransf.xlsx'));
   const sheet = workbook.getWorksheet(1);
 
   // Borrar valor previo y sobrescribir
   sheet.getCell('H2').value = null;
-  sheet.getCell('H2').value = monto;
+  sheet.getCell('H2').value = saldo;
 
   await workbook.xlsx.writeFile(path.join(__dirname, 'planillaformatotransf.xlsx'));
 
   // Notificar a Telegram
-  await notificarTelegram(monto, saldo);
+  await notificarTelegram(saldo, saldo);
 
   await browser.close();
-  return { status: 'ok', saldo, monto };
+  return { status: 'ok', saldo };
 }
 
 module.exports = { loginYActualizarPlanilla };
