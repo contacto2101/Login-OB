@@ -3,8 +3,20 @@ const ExcelJS = require('exceljs');
 const path = require('path');
 const fetch = require('node-fetch'); // Render soporta fetch en Node >=18
 
+// Ajustar monto en bloques de 500.000 hacia abajo
+function ajustarMonto(saldo) {
+  if (saldo < 1000000) return null;
+  return Math.floor(saldo / 500000) * 500000;
+}
+
 async function notificarTelegram(monto, saldo) {
-  const mensaje = `🔔 Prueba de sistema\nSaldo detectado: ${saldo}\nValor escrito en H2: ${monto}`;
+  let mensaje;
+  if (monto) {
+    mensaje = `✅ Planilla actualizada\nSaldo detectado: ${saldo}\nMonto escrito en H2: ${monto}`;
+  } else {
+    mensaje = `⚠️ Saldo detectado: ${saldo}\nNo se actualizó H2 porque es menor a 1.000.000`;
+  }
+
   await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -38,22 +50,27 @@ async function loginYActualizarPlanilla(rut, password) {
   const saldoTexto = await page.$eval('td.ng-star-inserted', el => el.innerText.trim());
   const saldo = parseInt(saldoTexto.replace(/[^0-9-]/g, ''), 10);
 
-  // Actualizar planilla en H2 con el saldo tal cual
-  const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile(path.join(__dirname, 'planillaformatotransf.xlsx'));
-  const sheet = workbook.getWorksheet(1);
+  // Calcular monto ajustado
+  const monto = ajustarMonto(saldo);
 
-  // Borrar valor previo y sobrescribir
-  sheet.getCell('H2').value = null;
-  sheet.getCell('H2').value = saldo;
+  if (monto) {
+    // Actualizar planilla en H2
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(path.join(__dirname, 'planillaformatotransf.xlsx'));
+    const sheet = workbook.getWorksheet(1);
 
-  await workbook.xlsx.writeFile(path.join(__dirname, 'planillaformatotransf.xlsx'));
+    // Borrar valor previo y sobrescribir
+    sheet.getCell('H2').value = null;
+    sheet.getCell('H2').value = monto;
 
-  // Notificar a Telegram
-  await notificarTelegram(saldo, saldo);
+    await workbook.xlsx.writeFile(path.join(__dirname, 'planillaformatotransf.xlsx'));
+  }
+
+  // Notificar a Telegram (siempre, aunque no se escriba en H2)
+  await notificarTelegram(monto, saldo);
 
   await browser.close();
-  return { status: 'ok', saldo };
+  return { status: monto ? 'ok' : 'descartado', saldo, monto };
 }
 
 module.exports = { loginYActualizarPlanilla };
