@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" 
-     class="bi bi-eye-slash" viewBox="0 0 16 16">
-  <path d="M13.359 11.238C14.06 10.39 14.63 9.46 
-           15 8c-1.5-5.5-7-5.5-7-5.5-1.17 0-2.26.26-3.24.72l1.48 
-           1.48A4.5 4.5 0 0 1 12.5 8c0 .65-.15 1.26-.41 
-           1.8l1.27 1.44z"/>
-  <path d="M3.707 2.293l10 10-1.414 
-           1.414-10-10 1.414-1.414z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+     viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20
+           c-7 0-11-8-11-8a21.77 21.77 0 0 1 5.06-6.94"/>
+  <path d="M1 1l22 22"/>
+  <path d="M9.88 9.88A3 3 0 0 0 12 15
+           a3 3 0 0 0 2.12-5.12"/>
 </svg>
