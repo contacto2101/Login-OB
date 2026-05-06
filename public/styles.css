@@ -361,22 +361,24 @@ h1, h2 {
   position: relative;
 }
 
-/* Botón ojo estilo OfficeBanking */
+.position-relative {
+  position: relative; /* asegura que el botón se posicione dentro del input */
+}
+
 .btn-show {
   position: absolute;
-  right: 10px;              /* lo pega al borde derecho */
-  top: 50%;                 /* lo centra verticalmente */
+  right: 10px;
+  top: 50%;
   transform: translateY(-50%);
   width: 24px;
   height: 24px;
   background: url("eye.svg") no-repeat center center;
   background-size: contain;
-  border: none;             /* elimina borde Bootstrap */
-  padding: 0;               /* elimina padding Bootstrap */
+  border: none;              /* elimina borde Bootstrap */
+  background-color: transparent; /* evita fondo rojo */
+  padding: 0;
   margin: 0;
   cursor: pointer;
-  opacity: 0.7;
-  background-color: transparent; /* evita fondo rojo */
 }
 
 .btn-show.off {
@@ -387,13 +389,11 @@ h1, h2 {
 .btn-show.on {
   background: url("eye-slash.svg") no-repeat center center;
   background-size: contain;
-  opacity: 1;
 }
 
-/* Evita franja roja o azul al hacer foco */
 .btn-show:focus,
 .btn-show:active {
-  outline: none;
-  box-shadow: none;
+  outline: none;   /* elimina borde azul */
+  box-shadow: none; /* elimina franja roja */
   background-color: transparent;
 }
