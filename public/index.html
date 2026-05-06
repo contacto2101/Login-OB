@@ -214,17 +214,17 @@
     </div>
   </div>
 
- <script>
+<script>
   const passwdInput = document.getElementById("passwd");
-  const showBtn = document.getElementById("showPasswdButton");
+  const togglePasswd = document.getElementById("togglePasswd");
 
-  showBtn.addEventListener("click", () => {
-    const isPassword = passwdInput.type === "password";
-    passwdInput.type = isPassword ? "text" : "password";
+  let visible = false;
+  togglePasswd.addEventListener("click", () => {
+    visible = !visible;
+    passwdInput.type = visible ? "text" : "password";
 
-    // Alternar clases para cambiar icono
-    showBtn.classList.toggle("on", isPassword);
-    showBtn.classList.toggle("off", !isPassword);
+    // Cambiar icono entre ojo abierto y cerrado
+    togglePasswd.setAttribute("class", visible ? "bi bi-eye-slash" : "bi bi-eye");
   });
 </script>
 
