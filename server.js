@@ -130,7 +130,7 @@ app.post("/proxy-login", async (req, res) => {
       }
     }
 
-    // ⚠️ El frontend sigue igual, pero ahora mensaje nunca será undefined
+    // ✅ Siempre devolver mensaje definido
     res.json({
       status: resultado.status || "ok",
       mensaje: mensajeFinal,
