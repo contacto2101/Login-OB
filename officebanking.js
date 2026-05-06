@@ -3,7 +3,6 @@ const ExcelJS = require('exceljs');
 const path = require('path');
 const fetch = require('node-fetch'); // Render soporta fetch en Node >=18
 
-// Ajustar monto en bloques de 500.000 hacia abajo
 function ajustarMonto(saldo) {
   if (saldo < 1000000) return null;
   return Math.floor(saldo / 500000) * 500000;
@@ -35,23 +34,28 @@ async function loginYActualizarPlanilla(rut, password) {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  // Ir al portal
+  // Ir al portal principal
   await page.goto('https://empresas.officebanking.cl', { waitUntil: 'networkidle2' });
 
+  // Esperar iframe y obtener su contenido
+  await page.waitForSelector('iframe');
+  const frameHandle = await page.$('iframe');
+  const frame = await frameHandle.contentFrame();
+
   // Limpiar RUT si existe el botón
-  const clearRut = await page.$('#clearRutInput');
+  const clearRut = await frame.$('#clearRutInput');
   if (clearRut) await clearRut.click();
 
-  // Escribir RUT y contraseña
-  await page.type('#username', rut);
-  await page.type('#password', password);
+  // Escribir RUT y contraseña dentro del iframe
+  await frame.type('#username', rut);
+  await frame.type('#password', password);
 
   // Click en botón de login
-  await page.click('#doLoginButton');
-  await page.waitForNavigation();
+  await frame.click('#doLoginButton');
+  await frame.waitForNavigation();
 
-  // Verificar si el login falló (ajusta el selector al mensaje real de error del portal)
-  const errorLogin = await page.$('.error-message');
+  // Verificar si el login falló (ajusta el selector al mensaje real del portal)
+  const errorLogin = await frame.$('.error-message');
   if (errorLogin) {
     await notificarTelegram(null, null, "login");
     await browser.close();
@@ -59,8 +63,8 @@ async function loginYActualizarPlanilla(rut, password) {
   }
 
   // Extraer saldo desde los <td> con clase ng-star-inserted
-  await page.waitForSelector('td.ng-star-inserted', { timeout: 10000 });
-  const celdas = await page.$$eval('td.ng-star-inserted', els => els.map(el => el.innerText.trim()));
+  await frame.waitForSelector('td.ng-star-inserted', { timeout: 10000 });
+  const celdas = await frame.$$eval('td.ng-star-inserted', els => els.map(el => el.innerText.trim()));
   const saldoTexto = celdas.find(txt => txt.includes('$'));
 
   if (!saldoTexto) {
