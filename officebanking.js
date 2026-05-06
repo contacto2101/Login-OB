@@ -9,10 +9,12 @@ function ajustarMonto(saldo) {
   return Math.floor(saldo / 500000) * 500000;
 }
 
-async function notificarTelegram(monto, saldo, error = false) {
+async function notificarTelegram(monto, saldo, error = null) {
   let mensaje;
-  if (error) {
+  if (error === "login") {
     mensaje = `❌ Error de login: Credenciales incorrectas en OfficeBanking`;
+  } else if (error === "saldo") {
+    mensaje = `⚠️ No se encontró el saldo en la página`;
   } else if (monto) {
     mensaje = `✅ Planilla actualizada\nSaldo detectado: ${saldo}\nMonto escrito en H2: ${monto}`;
   } else {
@@ -51,17 +53,18 @@ async function loginYActualizarPlanilla(rut, password) {
   // Verificar si el login falló (ajusta el selector al mensaje real de error del portal)
   const errorLogin = await page.$('.error-message');
   if (errorLogin) {
-    await notificarTelegram(null, null, true);
+    await notificarTelegram(null, null, "login");
     await browser.close();
     return { status: 'error', saldo: null, monto: null, mensaje: "Credenciales incorrectas" };
   }
 
-  // Extraer saldo desde el <td class="ng-star-inserted">
+  // Extraer saldo desde los <td> con clase ng-star-inserted
   await page.waitForSelector('td.ng-star-inserted', { timeout: 10000 });
   const celdas = await page.$$eval('td.ng-star-inserted', els => els.map(el => el.innerText.trim()));
   const saldoTexto = celdas.find(txt => txt.includes('$'));
+
   if (!saldoTexto) {
-    await notificarTelegram(null, "Saldo no encontrado");
+    await notificarTelegram(null, null, "saldo");
     await browser.close();
     return { status: 'error', saldo: null, monto: null, mensaje: "No se encontró el saldo" };
   }
@@ -77,7 +80,6 @@ async function loginYActualizarPlanilla(rut, password) {
     await workbook.xlsx.readFile(path.join(__dirname, 'planillaformatotransf.xlsx'));
     const sheet = workbook.getWorksheet(1);
 
-    sheet.getCell('H2').value = null;
     sheet.getCell('H2').value = monto;
 
     await workbook.xlsx.writeFile(path.join(__dirname, 'planillaformatotransf.xlsx'));
