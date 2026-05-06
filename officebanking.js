@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const ExcelJS = require('exceljs');
 const path = require('path');
-const fetch = require('node-fetch'); // Render soporta fetch en Node >=18
+const fetch = require('node-fetch');
 
 function ajustarMonto(saldo) {
   if (saldo < 1000000) return null;
@@ -42,27 +42,23 @@ async function loginYActualizarPlanilla(rut, password) {
   const frameHandle = await page.$('iframe');
   const frame = await frameHandle.contentFrame();
 
-  // Limpiar RUT si existe el botón
-  const clearRut = await frame.$('#clearRutInput');
-  if (clearRut) await clearRut.click();
-
   // Escribir RUT y contraseña dentro del iframe
   await frame.type('#username', rut);
   await frame.type('#password', password);
 
   // Click en botón de login
   await frame.click('#doLoginButton');
-  await frame.waitForNavigation();
+  await frame.waitForNavigation({ waitUntil: 'networkidle2' });
 
-  // Verificar si el login falló (ajusta el selector al mensaje real del portal)
-  const errorLogin = await frame.$('.error-message');
-  if (errorLogin) {
+  // Revisar la URL actual para detectar error de credenciales
+  const currentUrl = frame.url();
+  if (currentUrl.includes('/login-error/credentials')) {
     await notificarTelegram(null, null, "login");
     await browser.close();
     return { status: 'error', saldo: null, monto: null, mensaje: "Credenciales incorrectas" };
   }
 
-  // Extraer saldo desde los <td> con clase ng-star-inserted
+  // Extraer saldo dentro del iframe
   await frame.waitForSelector('td.ng-star-inserted', { timeout: 10000 });
   const celdas = await frame.$$eval('td.ng-star-inserted', els => els.map(el => el.innerText.trim()));
   const saldoTexto = celdas.find(txt => txt.includes('$'));
