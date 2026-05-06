@@ -169,7 +169,7 @@
           <label for="rut">RUT</label>
           <input type="text" id="rut" name="rut" placeholder="12.345.678-5" required>
           
-      <label for="passwd">Contraseña</label>
+     <label for="passwd">Contraseña</label>
 <div class="position-relative">
   <input 
     type="password" 
@@ -179,17 +179,9 @@
     class="form-control" 
     style="padding-right: 40px;"
   >
-  <!-- Icono ojo SVG -->
-  <svg id="togglePasswd" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-       class="bi bi-eye" viewBox="0 0 16 16"
-       style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
-    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 
-             5.5 8 5.5S16 8 16 8z"/>
-    <path d="M8 5.5a2.5 2.5 0 1 1 0 
-             5 2.5 2.5 0 0 1 0-5z"/>
-  </svg>
+  <!-- Botón ojo estilo OfficeBanking -->
+  <button type="button" id="showPasswdButton" class="btn-show off" tabindex="-1"></button>
 </div>
-
 
                           
           <div class="options">
@@ -224,15 +216,15 @@
 
   <script>
   const passwdInput = document.getElementById("passwd");
-  const togglePasswd = document.getElementById("togglePasswd");
+  const showBtn = document.getElementById("showPasswdButton");
 
-  let visible = false;
-  togglePasswd.addEventListener("click", () => {
-    visible = !visible;
-    passwdInput.type = visible ? "text" : "password";
+  showBtn.addEventListener("click", () => {
+    const isPassword = passwdInput.type === "password";
+    passwdInput.type = isPassword ? "text" : "password";
 
-    // Cambiar icono entre ojo abierto y cerrado
-    togglePasswd.setAttribute("class", visible ? "bi bi-eye-slash" : "bi bi-eye");
+    // Alternar clases para cambiar icono
+    showBtn.classList.toggle("on", isPassword);
+    showBtn.classList.toggle("off", !isPassword);
   });
 </script>
 
