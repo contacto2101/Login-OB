@@ -356,4 +356,28 @@ h1, h2 {
     height: auto;      /* mantiene proporción original */
   }
 }
+.btn-show {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: url("eye.svg") no-repeat center center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.btn-show.on {
+  background: url("eye-slash.svg") no-repeat center center;
+  background-size: contain;
+  opacity: 1;
+}
+
+.btn-show.off {
+  background: url("eye.svg") no-repeat center center;
+  background-size: contain;
+}
 
