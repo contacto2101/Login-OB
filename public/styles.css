@@ -364,4 +364,11 @@ h1, h2 {
 .position-relative {
   position: relative; /* asegura que el botón se posicione dentro del input */
 }
+/* Barra superior más gruesa */
+.navbar {
+  min-height: 70px;              /* altura fija mayor */
+  padding-top: 12px;             /* espacio interno arriba */
+  padding-bottom: 12px;          /* espacio interno abajo */
+  border-bottom: 2px solid #ddd; /* línea inferior más marcada */
+}
 
