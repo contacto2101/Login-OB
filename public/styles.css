@@ -373,7 +373,7 @@ h1, h2 {
 }
 @media (min-width: 992px) {
   .btn-ingresar {
-    margin-right: 20px; /* mueve el botón un poco hacia la izquierda */
+    margin-right: 30px; /* mueve el botón un poco hacia la izquierda */
   }
 }
 
