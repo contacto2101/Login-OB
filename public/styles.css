@@ -371,4 +371,9 @@ h1, h2 {
   padding-bottom: 12px;          /* espacio interno abajo */
   border-bottom: 4px solid #ddd; /* línea inferior más marcada */
 }
+@media (min-width: 992px) {
+  .btn-ingresar {
+    margin-right: 20px; /* mueve el botón un poco hacia la izquierda */
+  }
+}
 
