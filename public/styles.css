@@ -376,4 +376,10 @@ h1, h2 {
     margin-right: 30px; /* mueve el botón un poco hacia la izquierda */
   }
 }
+@media (min-width: 992px) {
+  .btn-ingresar {
+    padding: 8px 24px;   /* más espacio interno → botón más largo */
+    min-width: 140px;    /* ancho mínimo fijo */
+  }
+}
 
