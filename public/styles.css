@@ -366,9 +366,9 @@ h1, h2 {
 }
 /* Barra superior más gruesa */
 .navbar {
-  min-height: 80px;              /* altura fija mayor */
+  min-height: 90px;              /* altura fija mayor */
   padding-top: 12px;             /* espacio interno arriba */
   padding-bottom: 12px;          /* espacio interno abajo */
-  border-bottom: 2px solid #ddd; /* línea inferior más marcada */
+  border-bottom: 4px solid #ddd; /* línea inferior más marcada */
 }
 
