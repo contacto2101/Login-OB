@@ -5,7 +5,6 @@
   <title>Panel de Administración</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- CSS embebido -->
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -15,40 +14,40 @@
     }
 
     .login-box {
-      max-width: 600px;       /* tamaño máximo en escritorio */
-      margin: 40px auto;
-      padding: 20px;
+      max-width: 420px;       /* más pequeño que antes */
+      margin: 30px auto;      /* menos margen superior */
+      padding: 18px;          /* menos padding interno */
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       text-align: center;
-      width: 95%;             /* ocupa casi todo el ancho en móvil */
+      width: 90%;             /* ocupa casi todo el ancho en móvil */
       box-sizing: border-box;
     }
 
     .logo {
-      max-width: 150px;
+      max-width: 120px;       /* logo más pequeño */
       height: auto;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .login-box input,
     .login-box select {
       width: 100%;
-      margin: 10px 0;
-      padding: 8px;
-      font-size: 14px;
+      margin: 8px 0;
+      padding: 6px;
+      font-size: 13px;        /* fuente más pequeña */
       box-sizing: border-box;
     }
 
     .btn-santander {
       width: 100%;
-      padding: 10px;
-      font-size: 16px;
+      padding: 8px;
+      font-size: 14px;
       background-color: #cc0000;
       color: #fff;
       border: none;
-      border-radius: 25px;
+      border-radius: 20px;
       cursor: pointer;
     }
     .btn-santander:hover {
@@ -57,17 +56,19 @@
 
     @media (min-width: 768px) {
       .login-box {
-        width: 70%;           /* más estrecho en tablet/escritorio */
-        padding: 30px;
+        width: 60%;           /* más estrecho en escritorio */
+        padding: 22px;
       }
       .btn-santander {
         width: auto;
-        min-width: 160px;
+        min-width: 140px;
       }
     }
   </style>
 </head>
 <body>
+  <!-- aquí tu contenido del admin -->
+</body>
   <!-- resto del contenido -->
 </body>
   <script>
