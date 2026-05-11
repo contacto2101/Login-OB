@@ -299,12 +299,12 @@ h1, h2 {
 }
 /* Logos responsive */
 .logo-ob, .logo-santander {
-  height: 36px;
+  height: 28px;
   max-width: 100%;
 }
 @media (min-width: 768px) {
   .logo-ob, .logo-santander {
-    height: 40px;
+    height: 32px;
   }
 }
 
@@ -430,7 +430,7 @@ h1, h2 {
 
 .offcanvas-header .logo-ob,
 .offcanvas-header .logo-santander {
-  margin-top: 8px;     /* baja los logos individualmente */
+   margin-top: 8px;     /* baja los logos individualmente */
 }
 
 .offcanvas-header .btn-close {
