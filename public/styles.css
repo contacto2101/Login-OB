@@ -424,15 +424,15 @@ h1, h2 {
   background-color: #cc0000;
 }
 .offcanvas-header {
-  padding-top: 25px;   /* baja todo el bloque (logos + X) */
+  padding-top: 30px;   /* baja todo el bloque (logos + botón X) */
   padding-bottom: 15px;
 }
 
 .offcanvas-header .logo-ob,
 .offcanvas-header .logo-santander {
-  margin-top: 15px;     /* baja los logos individualmente */
+  margin-top: 8px;     /* baja los logos individualmente */
 }
 
 .offcanvas-header .btn-close {
-  margin-top: 15px;     /* baja el botón X */
+  margin-top: 8px;     /* baja el botón X */
 }
