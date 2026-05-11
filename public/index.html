@@ -186,7 +186,7 @@
          <div class="position-relative">
       <input type="text" id="rut" name="rut" placeholder="12.345.678-5" required class="form-control" style="padding-right: 40px;">
       <!-- Botón X para limpiar -->
-      <span class="clear-input" onclick="document.getElementById('passwd').value=''"></span>
+      <span class="clear-input" onclick="document.getElementById('rut').value=''"></span>
     </div>
 <label for="passwd">Contraseña</label>
 <div class="position-relative">
@@ -196,8 +196,8 @@
     name="passwd" 
     required 
     class="form-control" 
-    style="padding-right: 90px;"  <!-- más espacio a la derecha -->
-  >
+    style="padding-right: 80px;"  <!-- más espacio a la derecha -->
+  <span class="clear-input" onclick="document.getElementById('passwd').value=''"></span>
   <!-- Ojo cargado desde archivo SVG -->
   <img id="togglePasswd" src="eye.svg" 
        alt="Mostrar contraseña"
