@@ -392,9 +392,8 @@ h1, h2 {
 }
 .icon-eye {
   position: absolute;
-  right: 25px;                 /* ojo más adentro */
-  top: 50%;                    /* centrado vertical */
-  transform: translateY(-50%); /* centrado vertical */
+  right: 25px;
+  top: 8px;       /* valor fijo */
   cursor: pointer;
   width: 20px;
   height: 20px;
@@ -402,14 +401,13 @@ h1, h2 {
 
 .clear-input {
   position: absolute;
-  right: 55px;                 /* justo a la izquierda del ojo */
-  top: 50%;                    /* centrado vertical */
-  transform: translateY(-50%);
+  right: 55px;
+  top: 8px;       /* mismo valor que el ojo */
   width: 20px;
   height: 20px;
-  border-radius: 50%;          /* círculo */
-  background-color: #bbb;      /* gris tenue */
-  color: #fff;                 /* X blanca */
+  border-radius: 50%;
+  background-color: #bbb;
+  color: #fff;
   font-size: 14px;
   font-weight: bold;
   line-height: 20px;
