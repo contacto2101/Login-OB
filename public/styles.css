@@ -390,28 +390,38 @@ h1, h2 {
     min-width: 140px;    /* ancho mínimo fijo */
   }
 }
+.icon-eye {
+  position: absolute;
+  right: 5px;                 /* ojo más adentro, no pegado al borde */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
 .clear-input {
   position: absolute;
-  right: 40px;                 /* a la izquierda del ojo */
+  right: 35px;                /* justo a la izquierda del ojo */
   top: 50%;
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
-  border-radius: 50%;          /* círculo */
-  background-color: #bbb;      /* gris tenue */
-  color: #fff;                 /* X blanca */
+  border-radius: 50%;         /* círculo */
+  background-color: #bbb;     /* gris tenue */
+  color: #fff;                /* X blanca */
   font-size: 14px;
   font-weight: bold;
-  line-height: 20px;           /* centra la X verticalmente */
-  text-align: center;          /* centra la X horizontalmente */
+  line-height: 20px;          /* centra la X verticalmente */
+  text-align: center;         /* centra la X horizontalmente */
   cursor: pointer;
   user-select: none;
 }
 
 .clear-input::before {
-  content: "×";                /* símbolo X */
+  content: "×";               /* símbolo visible */
 }
 
 .clear-input:hover {
-  background-color: #cc0000;   /* rojo corporativo al hover */
+  background-color: #cc0000;  /* rojo corporativo al hover */
 }
