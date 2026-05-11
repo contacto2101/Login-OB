@@ -434,5 +434,7 @@ h1, h2 {
 }
 
 .offcanvas-header .btn-close {
-  margin-top: 8px;     /* baja el botón X */
+  margin-top: -10px;   /* sube la X respecto al contenedor */
+  align-self: flex-start; /* asegura que quede arriba */
 }
+
