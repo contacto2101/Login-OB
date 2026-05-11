@@ -232,7 +232,7 @@ h1, h2 {
   background-color: #000 !important;
 }
 
-/* ✅ Flechas en círculo blanco centradas */
+/* Flechas en círculo blanco centradas */
 .carousel-control-prev,
 .carousel-control-next {
   width: 60px !important;
@@ -242,7 +242,6 @@ h1, h2 {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  text-align: center;        /* centra el símbolo */
   opacity: 0.9 !important;
   transition: opacity 0.3s ease !important;
   top: 50% !important;
@@ -254,22 +253,30 @@ h1, h2 {
   opacity: 1 !important;
 }
 
-/* ✅ Íconos más grandes dentro del círculo */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   background-image: none !important;
 }
 
-.carousel-control-prev::after {
-  content: "‹";
+.carousel-control-prev::after,
+.carousel-control-next::after {
   font-size: 36px;
   color: #000;
+  line-height: 1;
+  display: flex;             /* convierte el pseudo-elemento en flex */
+  align-items: center;       /* centra verticalmente */
+  justify-content: center;   /* centra horizontalmente */
+  width: 100%;               /* ocupa todo el ancho del círculo */
+  height: 100%;              /* ocupa todo el alto del círculo */
+  text-align: center;
+}
+
+.carousel-control-prev::after {
+  content: "‹";
 }
 
 .carousel-control-next::after {
   content: "›";
-  font-size: 36px;
-  color: #000;
 }
 
 /* ✅ Imagen combinada en escritorio/tablet */
