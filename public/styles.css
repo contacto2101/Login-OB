@@ -392,16 +392,26 @@ h1, h2 {
 }
 .clear-input {
   position: absolute;
-  right: 10px;              /* ajusta según espacio con el ojo */
+  right: 40px;                 /* a la izquierda del ojo */
   top: 50%;
   transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;          /* círculo */
+  background-color: #bbb;      /* gris tenue */
+  color: #fff;                 /* X blanca */
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 20px;           /* centra la X verticalmente */
+  text-align: center;          /* centra la X horizontalmente */
   cursor: pointer;
-  font-size: 18px;
-  color: #999;
   user-select: none;
 }
 
-.clear-input:hover {
-  color: #cc0000;           /* rojo corporativo al hover */
+.clear-input::before {
+  content: "×";                /* símbolo X */
 }
 
+.clear-input:hover {
+  background-color: #cc0000;   /* rojo corporativo al hover */
+}
