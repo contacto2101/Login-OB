@@ -392,7 +392,7 @@ h1, h2 {
 }
 .icon-eye {
   position: absolute;
-  right: 25px;
+  right: 35px;
   top: 8px;       /* valor fijo */
   cursor: pointer;
   width: 20px;
@@ -401,7 +401,7 @@ h1, h2 {
 
 .clear-input {
   position: absolute;
-  right: 55px;
+  right: 65px;
   top: 8px;       /* mismo valor que el ojo */
   width: 20px;
   height: 20px;
