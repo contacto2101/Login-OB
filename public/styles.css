@@ -423,3 +423,16 @@ h1, h2 {
 .clear-input:hover {
   background-color: #cc0000;
 }
+.offcanvas-header {
+  padding-top: 25px;   /* baja todo el bloque (logos + X) */
+  padding-bottom: 15px;
+}
+
+.offcanvas-header .logo-ob,
+.offcanvas-header .logo-santander {
+  margin-top: 8px;     /* baja los logos individualmente */
+}
+
+.offcanvas-header .btn-close {
+  margin-top: 8px;     /* baja el botón X */
+}
