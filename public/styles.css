@@ -390,4 +390,18 @@ h1, h2 {
     min-width: 140px;    /* ancho mínimo fijo */
   }
 }
+.clear-input {
+  position: absolute;
+  right: 10px;              /* ajusta según espacio con el ojo */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #999;
+  user-select: none;
+}
+
+.clear-input:hover {
+  color: #cc0000;           /* rojo corporativo al hover */
+}
 
